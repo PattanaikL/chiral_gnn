@@ -1,11 +1,10 @@
 import math
 import torch
 from argparse import ArgumentParser
-from tqdm import tqdm
 from src.data.featurization import construct_loader
 from src.utils import Standardizer, create_logger
 from src.models.PointNet import PointNet
-from src.models.utils import build_lr_scheduler
+from src.models.training import train, test, build_lr_scheduler
 
 
 parser = ArgumentParser()
@@ -28,37 +27,6 @@ parser.add_argument('--use_cistrans_messages', action='store_true')
 args = parser.parse_args()
 logger = create_logger('train', args.log_dir)
 
-
-def train(model, loader, optimizer, loss, stdzer, device):
-    model.train()
-    loss_all = 0
-
-    for data in tqdm(loader):
-        data = data.to(device)
-        optimizer.zero_grad()
-
-        out = model(data)
-        result = loss(out, stdzer(data.y))
-        result.backward()
-
-        optimizer.step()
-        loss_all += loss(stdzer(out, rev=True), data.y)
-
-    return math.sqrt(loss_all / len(loader.dataset))  # rmse
-
-
-def test(model, loader, loss, stdzer, device):
-    model.eval()
-    error = 0
-
-    for data in tqdm(loader):
-        data = data.to(device)
-        out = model(data)
-        error += loss(stdzer(out, rev=True), data.y).item()
-
-    return math.sqrt(error / len(loader.dataset))  # rmse
-
-
 train_loader, val_loader = construct_loader(args)
 mean = train_loader.dataset.mean
 std = train_loader.dataset.std
@@ -79,12 +47,11 @@ best_epoch = 0
 
 logger.info("Starting training...")
 for epoch in range(1, args.n_epochs):
-    train_loss = train(model, train_loader, optimizer, loss, stdzer, device)
+    train_loss = train(model, train_loader, optimizer, loss, stdzer, device, scheduler)
     logger.info("Epoch {}: Training Loss {}".format(epoch, train_loss))
 
     val_loss = test(model, val_loader, loss, stdzer, device)
     logger.info("Epoch {}: Validation Loss {}".format(epoch, val_loss))
-    scheduler.step()
 
     if val_loss <= best_val_loss:
         best_val_loss = val_loss
