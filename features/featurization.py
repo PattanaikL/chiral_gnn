@@ -15,9 +15,9 @@ import torch_geometric as tg
 from torch_geometric.data import Dataset, DataLoader
 
 # Atom feature sizes
-MAX_ATOMIC_NUM = 100
+ATOMIC_SYMBOLS = ['H', 'C', 'N', 'O', 'F', 'Si', 'P', 'S', 'Cl', 'Br', 'I']
 ATOM_FEATURES = {
-    'atomic_num': list(range(MAX_ATOMIC_NUM)),
+    'atomic_num': ATOMIC_SYMBOLS,
     'degree': [0, 1, 2, 3, 4, 5],
     'formal_charge': [-1, -2, 1, 2, 0],
     'chiral_tag': [0, 1, 2, 3], 
@@ -39,7 +39,6 @@ CHIRALTAG_PARITY = {
 
 # len(choices) + 1 to include room for uncommon values; + 2 at end for IsAromatic and mass
 ATOM_FDIM = sum(len(choices) + 1 for choices in ATOM_FEATURES.values()) + 2
-BOND_FDIM = 14 + 2 # was 14, removed GetStereo()  added 2 for cis/trans
 
 
 def get_atom_fdim(args: Namespace) -> int:
@@ -57,10 +56,13 @@ def get_bond_fdim(args: Namespace) -> int:
 
     :param: Arguments.
     """
-    return BOND_FDIM
+    if args.chiral_features:
+        return 14
+    else:
+        return 7
 
 
-def onek_encoding_unk(value: int, choices: List[int]) -> List[int]:
+def onek_encoding_unk(value, choices: List) -> List[int]:
     """
     Creates a one-hot encoding.
 
@@ -76,7 +78,7 @@ def onek_encoding_unk(value: int, choices: List[int]) -> List[int]:
     return encoding
 
 
-def atom_features(atom: Chem.rdchem.Atom, functional_groups: List[int] = None) -> List[Union[bool, int, float]]:
+def atom_features(atom: Chem.rdchem.Atom, args) -> List[Union[bool, int, float]]:
     """
     Builds a feature vector for an atom.
 
@@ -84,16 +86,15 @@ def atom_features(atom: Chem.rdchem.Atom, functional_groups: List[int] = None) -
     :param functional_groups: A k-hot vector indicating the functional groups the atom belongs to.
     :return: A list containing the atom features.
     """
-    features = onek_encoding_unk(atom.GetAtomicNum() - 1, ATOM_FEATURES['atomic_num']) + \
+    features = onek_encoding_unk(atom.GetSymbol(), ATOM_FEATURES['atomic_num']) + \
            onek_encoding_unk(atom.GetTotalDegree(), ATOM_FEATURES['degree']) + \
-           onek_encoding_unk(atom.GetFormalCharge(), ATOM_FEATURES['formal_charge']) + \
-           onek_encoding_unk(int(atom.GetChiralTag()), ATOM_FEATURES['chiral_tag'])
+           onek_encoding_unk(atom.GetFormalCharge(), ATOM_FEATURES['formal_charge'])
     features +=  onek_encoding_unk(int(atom.GetTotalNumHs()), ATOM_FEATURES['num_Hs']) + \
            onek_encoding_unk(int(atom.GetHybridization()), ATOM_FEATURES['hybridization']) + \
            [1 if atom.GetIsAromatic() else 0] + \
            [atom.GetMass() * 0.01]  # scaled to about the same range as other features
-    if functional_groups is not None:
-        features += functional_groups
+    if args.chiral_features:
+        onek_encoding_unk(int(atom.GetChiralTag()), ATOM_FEATURES['chiral_tag'])
     return features
 
 def parity_features(atom: Chem.rdchem.Atom) -> int:
@@ -106,15 +107,17 @@ def parity_features(atom: Chem.rdchem.Atom) -> int:
     return CHIRALTAG_PARITY[atom.GetChiralTag()]
 
 
-def bond_features(bond: Chem.rdchem.Bond) -> List[Union[bool, int, float]]:
+def bond_features(bond: Chem.rdchem.Bond, args) -> List[Union[bool, int, float]]:
     """
     Builds a feature vector for a bond.
 
     :param bond: A RDKit bond.
     :return: A list containing the bond features.
     """
+    bond_fdim = get_bond_fdim(args)
+
     if bond is None:
-        fbond = [1] + [0] * (BOND_FDIM - 1)
+        fbond = [1] + [0] * (bond_fdim - 1)
     else:
         bt = bond.GetBondType()
         fbond = [
@@ -126,8 +129,8 @@ def bond_features(bond: Chem.rdchem.Bond) -> List[Union[bool, int, float]]:
             (bond.GetIsConjugated() if bt is not None else 0),
             (bond.IsInRing() if bt is not None else 0)
         ]
-        fbond += onek_encoding_unk(int(bond.GetStereo()), list(range(6))) # remove global cis/trans tags
-        fbond += [0, 0] # special cis/trans message edge type
+        if args.chiral_features:
+            fbond += onek_encoding_unk(int(bond.GetStereo()), list(range(6))) # remove global cis/trans tags
     return fbond
 
 
@@ -167,12 +170,16 @@ class MolGraph:
         # Convert smiles to molecule
         mol = Chem.MolFromSmiles(smiles)
 
+        # add chiral hydrogens
+        H_ids = [a.GetIdx() for a in mol.GetAtoms() if CHIRALTAG_PARITY[a.GetChiralTag()] != 0]
+        mol = Chem.AddHs(mol, onlyOnAtoms=H_ids)
+
         # fake the number of "atoms" if we are collapsing substructures
         self.n_atoms = mol.GetNumAtoms()
         
         # Get atom features
         for i, atom in enumerate(mol.GetAtoms()):
-            self.f_atoms.append(atom_features(atom))
+            self.f_atoms.append(atom_features(atom, args))
             self.parity_atoms.append(parity_features(atom))
         self.f_atoms = [self.f_atoms[i] for i in range(self.n_atoms)]
 
@@ -189,14 +196,10 @@ class MolGraph:
                     
                 self.edge_index.extend([(a1, a2), (a2, a1)])
 
-                f_bond = bond_features(bond)
+                f_bond = bond_features(bond, args)
 
-                if args.atom_messages:
-                    self.f_bonds.append(f_bond)
-                    self.f_bonds.append(f_bond)
-                else:
-                    self.f_bonds.append(self.f_atoms[a1] + f_bond)
-                    self.f_bonds.append(self.f_atoms[a2] + f_bond)
+                self.f_bonds.append(f_bond)
+                self.f_bonds.append(f_bond)
 
                 # Update index mappings
                 b1 = self.n_bonds
@@ -271,10 +274,6 @@ class MolDataset(Dataset):
             self.mean = np.mean(self.labels)
             self.std = np.std(self.labels)
 
-        if args.confs_dir:
-            self.confs_dir = args.confs_dir
-            self.zfill = len(os.listdir(self.confs_dir)[0].split('.')[0])
-
     def process_key(self, key):
         smi = self.smiles[key]
         molgraph = MolGraph(smi, self.args)
@@ -287,14 +286,7 @@ class MolDataset(Dataset):
         data.edge_index = torch.tensor(molgraph.edge_index, dtype=torch.long).t().contiguous()
         data.edge_attr = torch.tensor(molgraph.f_bonds, dtype=torch.float)
         data.y = torch.tensor([self.labels[key]], dtype=torch.float)
-
-        if self.args.confs_dir:
-            path = os.path.join(self.confs_dir, f'{self.data_map[key]}'.zfill(self.zfill) + '.sdf')
-            pos, sym = read_sdf(path, n=1)[0]
-            assert [a.GetSymbol() for a in Chem.MolFromSmiles(self.smiles[key]).GetAtoms()] == sym  # ordering
-            pos = torch.tensor(pos)
-            data.pos = pos - pos.mean(dim=0)
-            data.atoms = torch.tensor([a.GetAtomicNum() for a in Chem.MolFromSmiles(self.smiles[key]).GetAtoms()])
+        data.parity_atoms = torch.tensor(molgraph.parity_atoms, dtype=torch.long)
 
         return data
 
