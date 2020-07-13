@@ -8,7 +8,6 @@ from .bond_utils import get_cis_trans_atom_pairs
 from .utils import read_sdf
 
 import torch
-import pickle as pkl
 import numpy as np
 import pandas as pd
 
@@ -41,12 +40,6 @@ CHIRALTAG_PARITY = {
 # len(choices) + 1 to include room for uncommon values; + 2 at end for IsAromatic and mass
 ATOM_FDIM = sum(len(choices) + 1 for choices in ATOM_FEATURES.values()) + 2
 BOND_FDIM = 14 + 2 # was 14, removed GetStereo()  added 2 for cis/trans
-
-
-def clear_cache():
-    """Clears featurization cache."""
-    global SMILES_TO_GRAPH
-    SMILES_TO_GRAPH = {}
 
 
 def get_atom_fdim(args: Namespace) -> int:
@@ -137,16 +130,6 @@ def bond_features(bond: Chem.rdchem.Bond) -> List[Union[bool, int, float]]:
         fbond += [0, 0] # special cis/trans message edge type
     return fbond
 
-def cistrans_bond_features(local_cistrans: str) -> List[Union[bool, int, float]]:
-    fbond = [0 for _ in range(BOND_FDIM)]
-
-    if local_cistrans == 'cis':
-        fbond[-2] = 1
-    elif local_cistrans == 'trans':
-        fbond[-1] = 1
-    else:
-        raise ValueError('Invalid cis/trans specified')
-    return fbond
 
 class MolGraph:
     """
@@ -208,32 +191,6 @@ class MolGraph:
 
                 f_bond = bond_features(bond)
 
-                if args.atom_messages:
-                    self.f_bonds.append(f_bond)
-                    self.f_bonds.append(f_bond)
-                else:
-                    self.f_bonds.append(self.f_atoms[a1] + f_bond)
-                    self.f_bonds.append(self.f_atoms[a2] + f_bond)
-
-                # Update index mappings
-                b1 = self.n_bonds
-                b2 = b1 + 1
-                self.a2b[a2].append(b1)  # b1 = a1 --> a2
-                self.b2a.append(a1)
-                self.a2b[a1].append(b2)  # b2 = a2 --> a1
-                self.b2a.append(a2)
-                self.b2revb.append(b2)
-                self.b2revb.append(b1)
-                self.n_bonds += 2
-
-        # Get extra cis/trans "bonds" - ensure these are added after real bonds
-        # so that  tetrahedral parity isn't messed up by a different neighbor ordering
-        if args.use_cistrans_messages:
-            for (a1, a2), tag in get_cis_trans_atom_pairs(mol).items():
-                # print('{} bond identified for {} for atoms {}, {}'.format(tag, Chem.MolToSmiles(mol,True), a1, a2))
-                fbond = cistrans_bond_features(tag)
-                
-                # Same process of adding features as above
                 if args.atom_messages:
                     self.f_bonds.append(f_bond)
                     self.f_bonds.append(f_bond)
