@@ -1,10 +1,10 @@
 import math
 import torch
 from argparse import ArgumentParser
-from src.data.featurization import construct_loader
-from src.utils import Standardizer, create_logger
-from src.models.PointNet import PointNet
-from src.models.training import train, test, build_lr_scheduler
+from features.featurization import construct_loader
+from utils import Standardizer, create_logger
+from model.gnn import GNN
+from model.training import train, test, build_lr_scheduler
 
 
 parser = ArgumentParser()
@@ -32,8 +32,7 @@ mean = train_loader.dataset.mean
 std = train_loader.dataset.std
 stdzer = Standardizer(mean, std)
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = PointNet().to(device)
+model = GNN(args, train_loader.dataset.num_node_features, train_loader.dataset.num_edge_features).to(args.device)
 if torch.cuda.device_count() > 1:
     model = torch.nn.DataParallel(model)
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
@@ -47,10 +46,10 @@ best_epoch = 0
 
 logger.info("Starting training...")
 for epoch in range(1, args.n_epochs):
-    train_loss = train(model, train_loader, optimizer, loss, stdzer, device, scheduler)
+    train_loss = train(model, train_loader, optimizer, loss, stdzer, args.device, scheduler)
     logger.info("Epoch {}: Training Loss {}".format(epoch, train_loss))
 
-    val_loss = test(model, val_loader, loss, stdzer, device)
+    val_loss = test(model, val_loader, loss, stdzer, args.device)
     logger.info("Epoch {}: Validation Loss {}".format(epoch, val_loss))
 
     if val_loss <= best_val_loss:

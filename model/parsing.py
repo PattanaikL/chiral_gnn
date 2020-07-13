@@ -1,4 +1,5 @@
 from argparse import ArgumentParser, Namespace
+import torch
 
 
 def add_train_args(parser: ArgumentParser):
@@ -64,6 +65,8 @@ def modify_train_args(args: Namespace):
         setattr(args, 'tetra', True)
     else:
         setattr(args, 'tetra', False)
+
+    setattr(args, 'device', torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
 
 
 def parse_train_args() -> Namespace:
