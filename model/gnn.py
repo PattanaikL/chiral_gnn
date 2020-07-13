@@ -7,7 +7,7 @@ from .layers import GCNConv, GINEConv, DMPNNConv
 
 
 class GNN(nn.Module):
-    def __init__(self, args):
+    def __init__(self, args, num_node_features, num_edge_features):
         super(GNN, self).__init__()
 
         self.depth = args.depth
@@ -16,13 +16,11 @@ class GNN(nn.Module):
         self.gnn_type = args.gnn_type
         self.graph_pool = args.graph_pool
 
-        self.num_node_features = args.num_node_features
-        self.num_edge_features = args.num_edge_features
-
         if self.gnn_type == 'dmpnn':
-            self.message_init = nn.Linear(self.num_node_features + self.num_edge_features, self.hidden_size)
+            self.edge_init = nn.Linear(num_node_features + num_edge_features, self.hidden_size)
         else:
-            self.message_init = nn.Linear(self.num_node_features, self.hidden_size)
+            self.node_init = nn.Linear(num_node_features, self.hidden_size)
+            self.edge_init = nn.Linear(num_edge_features, self.hidden_size)
 
         # layers
         self.convs = torch.nn.ModuleList()
@@ -65,9 +63,10 @@ class GNN(nn.Module):
         if self.gnn_type == 'dmpnn':
             row, col = edge_index
             edge_attr = torch.cat([x[row], edge_attr], dim=1)
-            edge_attr = self.message_init(edge_attr)
+            edge_attr = self.edge_init(edge_attr)
         else:
-            x = self.message_init(x)
+            x = F.relu(self.node_init(x))
+            edge_attr = F.relu(self.edge_init(edge_attr))
 
         x_list = [x]
         edge_attr_list = [edge_attr]
