@@ -58,7 +58,7 @@ class GNN(nn.Module):
         self.ffn = nn.Linear(self.mult * self.hidden_size, 1)
 
     def forward(self, data):
-        x, edge_index, edge_attr, batch = data.x, data.edge_index, data.edge_attr, data.batch
+        x, edge_index, edge_attr, batch, parity_atoms = data.x, data.edge_index, data.edge_attr, data.batch, data.parity_atoms
 
         if self.gnn_type == 'dmpnn':
             row, col = edge_index
@@ -74,7 +74,7 @@ class GNN(nn.Module):
         # convolutions
         for l in range(self.depth):
 
-            x_h, edge_attr_h = self.convs[l](x_list[-1], edge_index, edge_attr_list[-1])
+            x_h, edge_attr_h = self.convs[l](x_list[-1], edge_index, edge_attr_list[-1], parity_atoms)
             h = edge_attr_h if self.gnn_type == 'dmpnn' else x_h
 
             if l == self.depth - 1:
