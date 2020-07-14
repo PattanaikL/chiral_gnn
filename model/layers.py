@@ -72,15 +72,40 @@ class GINEConv(MessagePassing):
                                  nn.ReLU(),
                                  nn.Linear(2 * args.hidden_size, args.hidden_size))
         self.batch_norm = nn.BatchNorm1d(args.hidden_size)
+        self.tetra = args.tetra
+        if self.tetra:
+            self.tetra_update = get_tetra_update(args)
 
-    def forward(self, x, edge_index, edge_attr):
+    def forward(self, x, edge_index, edge_attr, parity_atoms):
         # no edge updates
         x_new = self.propagate(edge_index, x=x, edge_attr=edge_attr)
+
+        if self.tetra:
+            tetra_ids = parity_atoms.nonzero().squeeze()
+            x_new[tetra_ids] = self.tetra_message(x, edge_index, edge_attr, tetra_ids, parity_atoms)
+
         x = self.mlp((1 + self.eps) * x + x_new)
         return self.batch_norm(x), edge_attr
 
     def message(self, x_j, edge_attr):
         return F.relu(x_j + edge_attr)
+
+    def tetra_message(self, x, edge_index, edge_attr, tetra_ids, parity_atoms):
+
+        row, col = edge_index
+        tetra_nei_ids = torch.cat([row[col == i].unsqueeze(0) for i in range(x.size(0)) if i in tetra_ids])
+
+        # switch entries for -1 rdkit labels
+        ccw_mask = parity_atoms[tetra_ids] == -1
+        tetra_nei_ids[ccw_mask] = tetra_nei_ids.clone()[ccw_mask][:, [1, 0, 2, 3]]
+
+        # calculate reps
+        edge_ids = torch.cat([tetra_nei_ids.view(1, -1), tetra_ids.repeat_interleave(4).unsqueeze(0)], dim=0)
+        dense_edge_attr = to_dense_adj(edge_index, batch=None, edge_attr=edge_attr).squeeze(0)
+        edge_reps = dense_edge_attr[edge_ids[0], edge_ids[1], :].view(tetra_nei_ids.size(0), 4, -1)
+        reps = x[tetra_nei_ids] + edge_reps
+
+        return self.tetra_update(reps)
 
 
 class DMPNNConv(MessagePassing):
