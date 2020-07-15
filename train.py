@@ -5,27 +5,9 @@ from features.featurization import construct_loader
 from utils import Standardizer, create_logger
 from model.gnn import GNN
 from model.training import train, test, build_lr_scheduler
+from model.parsing import parse_train_args
 
-
-parser = ArgumentParser()
-
-parser.add_argument('--log_dir', type=str)
-parser.add_argument('--data_path', type=str)
-parser.add_argument('--confs_dir', type=str)
-parser.add_argument('--split_path', type=str)
-
-parser.add_argument('--n_epochs', type=int, default=100)
-parser.add_argument('--warmup_epochs', type=int, default=2)
-parser.add_argument('--batch_size', type=int, default=64)
-parser.add_argument('--mini_batch', type=int, default=4)
-parser.add_argument('--lr', type=float, default=1e-3)
-parser.add_argument('--num_workers', type=int, default=2)
-
-parser.add_argument('--atom_messages', action='store_true')
-parser.add_argument('--use_cistrans_messages', action='store_true')
-
-args = parser.parse_args()
-logger = create_logger('train', args.log_dir)
+args = parse_train_args()
 
 train_loader, val_loader = construct_loader(args)
 mean = train_loader.dataset.mean
