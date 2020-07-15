@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool, GlobalAttention, Set2Set
-from .layers import GCNConv, GINEConv, DMPNNConv
+from .layers import GCNConv, GINEConv, DMPNNConv, get_tetra_update
 
 
 class GNN(nn.Module):
@@ -15,9 +15,11 @@ class GNN(nn.Module):
         self.dropout = args.dropout
         self.gnn_type = args.gnn_type
         self.graph_pool = args.graph_pool
+        self.tetra = args.tetra
 
         if self.gnn_type == 'dmpnn':
             self.edge_init = nn.Linear(num_node_features + num_edge_features, self.hidden_size)
+            self.edge_to_node = DMPNNConv(args)
         else:
             self.node_init = nn.Linear(num_node_features, self.hidden_size)
             self.edge_init = nn.Linear(num_edge_features, self.hidden_size)
@@ -36,6 +38,9 @@ class GNN(nn.Module):
                 ValueError('Undefined GNN type called {}'.format(self.gnn_type))
 
         # graph pooling
+        if self.tetra:
+            self.tetra_update = get_tetra_update(args)
+
         if self.graph_pool == "sum":
             self.pool = global_add_pool
         elif self.graph_pool == "mean":
@@ -88,5 +93,9 @@ class GNN(nn.Module):
             else:
                 h += x_h
                 x_list.append(h)
+
+        # dmpnn edge -> node aggregation
+        if self.gnn_type == 'dmpnn':
+            h, _ = self.edge_to_node(x_list[-1], edge_index, h, parity_atoms)
 
         return self.ffn(self.pool(h, batch))
