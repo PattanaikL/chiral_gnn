@@ -68,7 +68,7 @@ class GNN(nn.Module):
         if self.gnn_type == 'dmpnn':
             row, col = edge_index
             edge_attr = torch.cat([x[row], edge_attr], dim=1)
-            edge_attr = self.edge_init(edge_attr)
+            edge_attr = F.relu(self.edge_init(edge_attr))
         else:
             x = F.relu(self.node_init(x))
             edge_attr = F.relu(self.edge_init(edge_attr))
