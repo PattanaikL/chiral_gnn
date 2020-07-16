@@ -1,13 +1,15 @@
 import math
 import torch
-from argparse import ArgumentParser
+
 from features.featurization import construct_loader
 from utils import Standardizer, create_logger
+
 from model.gnn import GNN
 from model.training import train, test, build_lr_scheduler
 from model.parsing import parse_train_args
 
 args = parse_train_args()
+torch.manual_seed(args.seed)
 logger = create_logger('train', args.log_dir)
 
 train_loader, val_loader = construct_loader(args)
