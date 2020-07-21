@@ -12,6 +12,7 @@ class TetraPermuter(nn.Module):
         self.W_bs = nn.ModuleList([copy.deepcopy(nn.Linear(hidden, hidden)) for _ in range(4)])
         self.device = device
         self.drop = nn.Dropout(p=0.2)
+        self.reset_parameters()
 
         self.tetra_perms = torch.tensor([[0, 1, 2, 3],
                                          [0, 2, 3, 1],
@@ -25,6 +26,12 @@ class TetraPermuter(nn.Module):
                                          [3, 0, 2, 1],
                                          [3, 1, 0, 2],
                                          [3, 2, 1, 0]])
+
+    def reset_parameters(self):
+        gain = 0.5
+        for W_b in self.W_bs:
+            nn.init.xavier_uniform_(W_b.weight, gain=gain)
+            gain += 0.5
 
     def forward(self, x):
         nei_messages = torch.zeros([x.size(0), x.size(2)]).to(self.device)
