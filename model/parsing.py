@@ -26,12 +26,8 @@ def add_train_args(parser: ArgumentParser):
                         help='Number of epochs during which learning rate increases linearly from'
                              'init_lr to max_lr. Afterwards, learning rate decreases exponentially'
                              'from max_lr to final_lr.')
-    parser.add_argument('--init_lr', type=float, default=1e-4,
-                        help='Initial learning rate')
-    parser.add_argument('--max_lr', type=float, default=1e-3,
-                        help='Maximum learning rate')
-    parser.add_argument('--final_lr', type=float, default=1e-4,
-                        help='Final learning rate')
+    parser.add_argument('--lr', type=float, default=1e-4,
+                        help='Learning rate')
     parser.add_argument('--num_workers', type=int, default=5,
                         help='Number of workers to use in dataloader')
 

@@ -156,5 +156,5 @@ def build_lr_scheduler(optimizer: Optimizer, args: Namespace, train_data_size: i
         steps_per_epoch=train_data_size // args.batch_size,
         init_lr=[args.lr / 10],
         max_lr=[args.lr],
-        final_lr=[args.lr / 100]
+        final_lr=[args.lr / 10]
     )
