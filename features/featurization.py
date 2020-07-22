@@ -174,6 +174,12 @@ class MolGraph:
         H_ids = [a.GetIdx() for a in mol.GetAtoms() if CHIRALTAG_PARITY[a.GetChiralTag()] != 0]
         mol = Chem.AddHs(mol, onlyOnAtoms=H_ids)
 
+        # remove stereochem label from atoms with less/more than 4 neighbors
+        for i in H_ids:
+            a = mol.GetAtomWithIdx(i)
+            if len(a.GetNeighbors()) != 4:
+                a.SetChiralTag(ChiralType.CHI_UNSPECIFIED)
+
         # fake the number of "atoms" if we are collapsing substructures
         self.n_atoms = mol.GetNumAtoms()
         
@@ -287,6 +293,7 @@ class MolDataset(Dataset):
         data.edge_attr = torch.tensor(molgraph.f_bonds, dtype=torch.float)
         data.y = torch.tensor([self.labels[key]], dtype=torch.float)
         data.parity_atoms = torch.tensor(molgraph.parity_atoms, dtype=torch.long)
+        data.smiles = self.smiles[key]
 
         return data
 
