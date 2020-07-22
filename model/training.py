@@ -3,6 +3,8 @@ from tqdm import tqdm
 from typing import List, Union
 from argparse import Namespace
 import numpy as np
+
+import torch
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import _LRScheduler
 
@@ -26,16 +28,35 @@ def train(model, loader, optimizer, loss, stdzer, device, scheduler):
     return math.sqrt(loss_all / len(loader.dataset))  # rmse
 
 
+def eval(model, loader, loss, stdzer, device):
+    model.eval()
+    error = 0
+
+    with torch.no_grad():
+        for data in tqdm(loader):
+            data = data.to(device)
+            out = model(data)
+            error += loss(stdzer(out, rev=True), data.y).item()
+
+    return math.sqrt(error / len(loader.dataset))  # rmse
+
+
 def test(model, loader, loss, stdzer, device):
     model.eval()
     error = 0
 
-    for data in tqdm(loader):
-        data = data.to(device)
-        out = model(data)
-        error += loss(stdzer(out, rev=True), data.y).item()
+    preds = []
+    with torch.no_grad():
+        for data in tqdm(loader):
+            data = data.to(device)
+            out = model(data)
+            pred = stdzer(out, rev=True)
+            error += loss(pred, data.y).item()
 
-    return math.sqrt(error / len(loader.dataset))  # rmse
+        preds.extend(pred.cpu().detach().tolist())
+    preds = [y for ys in preds for y in ys]
+
+    return preds, math.sqrt(error / len(loader.dataset))  # rmse
 
 
 class NoamLR(_LRScheduler):
