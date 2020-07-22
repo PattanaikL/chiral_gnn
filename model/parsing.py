@@ -11,6 +11,8 @@ def add_train_args(parser: ArgumentParser):
     # General arguments
     parser.add_argument('--data_path', type=str,
                         help='Path to data CSV file')
+    parser.add_argument('--split_path', type=str,
+                        help='Path to .npy file containing train/val/test split indices')
     parser.add_argument('--log_dir', type=str, default=None,
                         help='Directory where model checkpoints will be saved')
     parser.add_argument('--seed', type=int, default=0,
@@ -18,7 +20,7 @@ def add_train_args(parser: ArgumentParser):
                              'When `num_folds` > 1, the first fold uses this seed and all'
                              'subsequent folds add 1 to the seed.')
     # Training arguments
-    parser.add_argument('--epochs', type=int, default=30,
+    parser.add_argument('--n_epochs', type=int, default=60,
                         help='Number of epochs to run')
     parser.add_argument('--batch_size', type=int, default=50,
                         help='Batch size')
@@ -39,7 +41,7 @@ def add_train_args(parser: ArgumentParser):
                         help='Dimensionality of hidden layers in MPN')
     parser.add_argument('--depth', type=int, default=3,
                         help='Number of message passing steps')
-    parser.add_argument('--dropout', type=float, default=0.0,
+    parser.add_argument('--dropout', type=float, default=0.2,
                         help='Dropout probability')
     parser.add_argument('--graph_pool', type=str, default='sum',
                         choices=['sum', 'mean', 'max', 'attn', 'set2set'],
