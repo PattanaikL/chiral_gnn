@@ -98,4 +98,4 @@ class GNN(nn.Module):
         if self.gnn_type == 'dmpnn':
             h, _ = self.edge_to_node(x_list[-1], edge_index, h, parity_atoms)
 
-        return self.ffn(self.pool(h, batch))
+        return self.ffn(self.pool(h, batch)).squeeze(-1)
