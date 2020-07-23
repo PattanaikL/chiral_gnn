@@ -13,7 +13,7 @@ def train(model, loader, optimizer, loss, stdzer, device, scheduler):
     model.train()
     loss_all = 0
 
-    for data in tqdm(loader):
+    for data in tqdm(loader, total=len(loader)):
         data = data.to(device)
         optimizer.zero_grad()
 
@@ -33,7 +33,7 @@ def eval(model, loader, loss, stdzer, device):
     error = 0
 
     with torch.no_grad():
-        for data in tqdm(loader):
+        for data in tqdm(loader, total=len(loader)):
             data = data.to(device)
             out = model(data)
             error += loss(stdzer(out, rev=True), data.y).item()
@@ -47,14 +47,12 @@ def test(model, loader, loss, stdzer, device):
 
     preds = []
     with torch.no_grad():
-        for data in tqdm(loader):
+        for data in tqdm(loader, total=len(loader)):
             data = data.to(device)
             out = model(data)
             pred = stdzer(out, rev=True)
             error += loss(pred, data.y).item()
-
-        preds.extend(pred.cpu().detach().tolist())
-    preds = [y for ys in preds for y in ys]
+            preds.extend(pred.cpu().detach().tolist())
 
     return preds, math.sqrt(error / len(loader.dataset))  # rmse
 
