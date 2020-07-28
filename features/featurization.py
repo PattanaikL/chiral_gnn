@@ -94,7 +94,7 @@ def atom_features(atom: Chem.rdchem.Atom, args) -> List[Union[bool, int, float]]
            [1 if atom.GetIsAromatic() else 0] + \
            [atom.GetMass() * 0.01]  # scaled to about the same range as other features
     if args.chiral_features:
-        onek_encoding_unk(int(atom.GetChiralTag()), ATOM_FEATURES['chiral_tag'])
+        features += onek_encoding_unk(int(atom.GetChiralTag()), ATOM_FEATURES['chiral_tag'])
     return features
 
 def parity_features(atom: Chem.rdchem.Atom) -> int:
