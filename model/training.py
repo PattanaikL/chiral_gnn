@@ -9,9 +9,9 @@ from torch.optim import Optimizer
 from torch.optim.lr_scheduler import _LRScheduler
 
 
-def train(model, loader, optimizer, loss, stdzer, device, scheduler):
+def train(model, loader, optimizer, loss, stdzer, device, scheduler, task):
     model.train()
-    loss_all = 0
+    loss_all, correct = 0, 0
 
     for data in tqdm(loader, total=len(loader)):
         data = data.to(device)
@@ -25,12 +25,19 @@ def train(model, loader, optimizer, loss, stdzer, device, scheduler):
         scheduler.step()
         loss_all += loss(stdzer(out, rev=True), data.y)
 
-    return math.sqrt(loss_all / len(loader.dataset))  # rmse
+        if task == 'classification':
+            predicted = torch.round(out.data)
+            correct += (predicted == data.y).sum().double()
+
+    if task == 'regression':
+        return math.sqrt(loss_all / len(loader.dataset)), None  # rmse
+    elif task == 'classification':
+        return loss_all / len(loader.dataset), correct / len(loader.dataset)
 
 
-def eval(model, loader, loss, stdzer, device):
+def eval(model, loader, loss, stdzer, device, task):
     model.eval()
-    error = 0
+    error, correct = 0, 0
 
     with torch.no_grad():
         for data in tqdm(loader, total=len(loader)):
@@ -38,12 +45,19 @@ def eval(model, loader, loss, stdzer, device):
             out = model(data)
             error += loss(stdzer(out, rev=True), data.y).item()
 
-    return math.sqrt(error / len(loader.dataset))  # rmse
+            if task == 'classification':
+                predicted = torch.round(out.data)
+                correct += (predicted == data.y).sum().double()
+
+    if task == 'regression':
+        return math.sqrt(error / len(loader.dataset)), None  # rmse
+    elif task == 'classification':
+        return error / len(loader.dataset), correct / len(loader.dataset)
 
 
-def test(model, loader, loss, stdzer, device):
+def test(model, loader, loss, stdzer, device, task):
     model.eval()
-    error = 0
+    error, correct = 0, 0
 
     preds = []
     with torch.no_grad():
@@ -54,7 +68,14 @@ def test(model, loader, loss, stdzer, device):
             error += loss(pred, data.y).item()
             preds.extend(pred.cpu().detach().tolist())
 
-    return preds, math.sqrt(error / len(loader.dataset))  # rmse
+            if task == 'classification':
+                predicted = torch.round(out.data)
+                correct += (predicted == data.y).sum().double()
+
+    if task == 'regression':
+        return preds, math.sqrt(error / len(loader.dataset)), None  # rmse
+    elif task == 'classification':
+        return preds, error / len(loader.dataset), correct / len(loader.dataset)
 
 
 class NoamLR(_LRScheduler):

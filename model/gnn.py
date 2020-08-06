@@ -16,6 +16,7 @@ class GNN(nn.Module):
         self.gnn_type = args.gnn_type
         self.graph_pool = args.graph_pool
         self.tetra = args.tetra
+        self.task = args.task
 
         if self.gnn_type == 'dmpnn':
             self.edge_init = nn.Linear(num_node_features + num_edge_features, self.hidden_size)
@@ -98,4 +99,7 @@ class GNN(nn.Module):
         if self.gnn_type == 'dmpnn':
             h, _ = self.edge_to_node(x_list[-1], edge_index, h, parity_atoms)
 
-        return self.ffn(self.pool(h, batch)).squeeze(-1)
+        if self.task == 'regression':
+            return self.ffn(self.pool(h, batch)).squeeze(-1)
+        elif self.task == 'classification':
+            return torch.sigmoid(self.ffn(self.pool(h, batch))).squeeze(-1)

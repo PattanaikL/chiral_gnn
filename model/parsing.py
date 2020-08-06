@@ -15,6 +15,8 @@ def add_train_args(parser: ArgumentParser):
                         help='Path to .npy file containing train/val/test split indices')
     parser.add_argument('--log_dir', type=str, default=None,
                         help='Directory where model checkpoints will be saved')
+    parser.add_argument('--task', type=str, default='regression',
+                        help='Regression or classification task')
     parser.add_argument('--seed', type=int, default=0,
                         help='Random seed to use when splitting data into train/val/test sets.'
                              'When `num_folds` > 1, the first fold uses this seed and all'

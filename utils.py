@@ -1,11 +1,17 @@
 import os
 import logging
+from argparse import Namespace
+from torch import nn
 
 
 class Standardizer:
-    def __init__(self, mean, std):
-        self.mean = mean
-        self.std = std
+    def __init__(self, mean, std, task='regression'):
+        if task == 'regression':
+            self.mean = mean
+            self.std = std
+        elif task == 'classification':
+            self.mean = 0
+            self.std = 1
 
     def __call__(self, x, rev=False):
         if rev:
@@ -38,3 +44,19 @@ def create_logger(name: str, log_dir: str = None) -> logging.Logger:
     logger.addHandler(fh)
 
     return logger
+
+
+def get_loss_func(args: Namespace) -> nn.Module:
+    """
+    Gets the loss function corresponding to a given dataset type.
+
+    :param args: Namespace containing the dataset type ("classification" or "regression").
+    :return: A PyTorch loss function.
+    """
+    if args.task == 'classification':
+        return nn.BCELoss(reduction='sum')
+
+    if args.task == 'regression':
+        return nn.MSELoss(reduction='sum')
+
+    raise ValueError(f'Dataset type "{args.task}" not supported.')
