@@ -7,6 +7,7 @@ import numpy as np
 import torch
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import _LRScheduler
+from sklearn.metrics import roc_auc_score
 
 
 def train(model, loader, optimizer, loss, stdzer, device, scheduler, task):
@@ -59,7 +60,7 @@ def test(model, loader, loss, stdzer, device, task):
     model.eval()
     error, correct = 0, 0
 
-    preds = []
+    preds, ys = [], []
     with torch.no_grad():
         for data in tqdm(loader, total=len(loader)):
             data = data.to(device)
@@ -71,11 +72,13 @@ def test(model, loader, loss, stdzer, device, task):
             if task == 'classification':
                 predicted = torch.round(out.data)
                 correct += (predicted == data.y).sum().double()
+                ys.extend(data.y.cpu().detach().tolist())
 
     if task == 'regression':
-        return preds, math.sqrt(error / len(loader.dataset)), None  # rmse
+        return preds, math.sqrt(error / len(loader.dataset)), None, None  # rmse
     elif task == 'classification':
-        return preds, error / len(loader.dataset), correct / len(loader.dataset)
+        auc = roc_auc_score(ys, preds)
+        return preds, error / len(loader.dataset), correct / len(loader.dataset), auc
 
 
 class NoamLR(_LRScheduler):

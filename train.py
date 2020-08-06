@@ -70,10 +70,11 @@ model.load_state_dict(state_dict)
 
 # predict test data
 test_loader = construct_loader(args, modes='test')
-preds, test_loss, test_acc = test(model, test_loader, loss, stdzer, args.device, args.task)
+preds, test_loss, test_acc, test_auc = test(model, test_loader, loss, stdzer, args.device, args.task)
 logger.info(f"Test Loss {test_loss}")
 if args.task == 'classification':
     logger.info(f"Test Classification Accuracy {test_acc}")
+    logger.info(f"Test ROC AUC Score {test_auc}")
 
 # save predictions
 smiles = test_loader.dataset.smiles
