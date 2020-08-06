@@ -57,7 +57,7 @@ def get_bond_fdim(args: Namespace) -> int:
     :param: Arguments.
     """
     if args.chiral_features:
-        return 14
+        return 7
     else:
         return 7
 
@@ -129,8 +129,8 @@ def bond_features(bond: Chem.rdchem.Bond, args) -> List[Union[bool, int, float]]
             (bond.GetIsConjugated() if bt is not None else 0),
             (bond.IsInRing() if bt is not None else 0)
         ]
-        if args.chiral_features:
-            fbond += onek_encoding_unk(int(bond.GetStereo()), list(range(6))) # remove global cis/trans tags
+        # if args.chiral_features:
+        #     fbond += onek_encoding_unk(int(bond.GetStereo()), list(range(6))) # remove global cis/trans tags
     return fbond
 
 
