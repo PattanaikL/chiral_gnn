@@ -25,6 +25,7 @@ def optimize(trial, args):
     setattr(args, 'graph_pool', trial.suggest_categorical('graph_pool', ['sum', 'mean', 'max', 'attn', 'set2set']))
 
     setattr(args, 'log_dir', os.path.join(args.hyperopt_dir, str(trial._trial_id)))
+    modify_train_args(args)
 
     torch.manual_seed(args.seed)
     train_logger = create_logger('train', args.log_dir)
@@ -103,7 +104,6 @@ if __name__ == '__main__':
     parser.add_argument('--n_trials', type=int, default=25,
                         help='Number of hyperparameter choices to try')
     args = parser.parse_args()
-    modify_train_args(args)
 
     if not os.path.exists(args.hyperopt_dir):
         os.makedirs(args.hyperopt_dir)
