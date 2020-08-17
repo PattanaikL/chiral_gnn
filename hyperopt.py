@@ -3,6 +3,7 @@ import math
 import torch
 import pandas as pd
 import optuna
+import joblib
 
 from argparse import ArgumentParser
 import logging
@@ -120,5 +121,7 @@ if __name__ == '__main__':
         pruner=optuna.pruners.HyperbandPruner(max_resource=args.n_epochs),
         sampler=optuna.samplers.CmaEsSampler()
     )
+    joblib.dump(study, os.path.join(args.hyperopt_dir, "study.pkl"))
+
     logger.info("Running optimization...")
     study.optimize(lambda trial: optimize(trial, args), n_trials=args.n_trials)
