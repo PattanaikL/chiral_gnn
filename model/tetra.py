@@ -37,7 +37,7 @@ class TetraPermuter(nn.Module):
         nei_messages = torch.zeros([x.size(0), x.size(2)]).to(self.device)
 
         for p in self.tetra_perms:
-            nei_messages_list = [self.drop(F.relu(l(t))) for l, t in zip(self.W_bs, torch.split(x[:, p, :], 1, dim=1))]
+            nei_messages_list = [self.drop(F.tanh(l(t))) for l, t in zip(self.W_bs, torch.split(x[:, p, :], 1, dim=1))]
             nei_messages += self.drop(F.relu(torch.cat(nei_messages_list, dim=1).sum(dim=1)))
         return nei_messages / 12.
 
