@@ -319,7 +319,7 @@ def construct_loader(args, modes=('train', 'val')):
         dataset = MolDataset(smiles, labels, args, mode)
         loader = DataLoader(dataset=dataset,
                             batch_size=args.batch_size,
-                            shuffle=True if mode == 'train' else False,
+                            shuffle=not args.no_shuffle if mode == 'train' else False,
                             num_workers=args.num_workers,
                             pin_memory=True)
         loaders.append(loader)

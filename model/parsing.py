@@ -34,6 +34,8 @@ def add_train_args(parser: ArgumentParser):
                         help='Learning rate')
     parser.add_argument('--num_workers', type=int, default=5,
                         help='Number of workers to use in dataloader')
+    parser.add_argument('--no_shuffle', action='store_true', default=False,
+                        help='Whether or not to retain default ordering during training')
 
     # Model arguments
     parser.add_argument('--gnn_type', type=str,
