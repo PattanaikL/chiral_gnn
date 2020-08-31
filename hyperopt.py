@@ -104,6 +104,8 @@ if __name__ == '__main__':
                         help='Directory to save all results')
     parser.add_argument('--n_trials', type=int, default=25,
                         help='Number of hyperparameter choices to try')
+    parser.add_argument('--restart', action='store_true', default=False,
+                        help='Whether or not to resume study from previous .pkl file')
     args = parser.parse_args()
 
     if not os.path.exists(args.hyperopt_dir):
@@ -117,10 +119,13 @@ if __name__ == '__main__':
     optuna.logging.enable_propagation()  # Propagate logs to the root logger.
     optuna.logging.disable_default_handler()  # Stop showing logs in sys.stderr.
 
-    study = optuna.create_study(
-        pruner=optuna.pruners.HyperbandPruner(max_resource=args.n_epochs),
-        sampler=optuna.samplers.CmaEsSampler()
-    )
+    if args.restart:
+        study = joblib.load(os.path.join(args.hyperopt_dir, "study.pkl"))
+    else:
+        study = optuna.create_study(
+            pruner=optuna.pruners.HyperbandPruner(max_resource=args.n_epochs),
+            sampler=optuna.samplers.CmaEsSampler()
+        )
     joblib.dump(study, os.path.join(args.hyperopt_dir, "study.pkl"))
 
     logger.info("Running optimization...")
