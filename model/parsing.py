@@ -36,6 +36,8 @@ def add_train_args(parser: ArgumentParser):
                         help='Number of workers to use in dataloader')
     parser.add_argument('--no_shuffle', action='store_true', default=False,
                         help='Whether or not to retain default ordering during training')
+    parser.add_argument('--shuffle_pairs', action='store_true', default=False,
+                        help='Whether or not to shuffle only pairs of stereoisomers')
 
     # Model arguments
     parser.add_argument('--gnn_type', type=str,
@@ -67,6 +69,10 @@ def modify_train_args(args: Namespace):
         setattr(args, 'tetra', True)
     else:
         setattr(args, 'tetra', False)
+
+    # shuffle=False for custom sampler
+    if args.shuffle_pairs:
+        setattr(args, 'no_shuffle', True)
 
     setattr(args, 'device', torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
 

@@ -10,9 +10,11 @@ from .utils import read_sdf
 import torch
 import numpy as np
 import pandas as pd
+from itertools import chain
 
 import torch_geometric as tg
 from torch_geometric.data import Dataset, DataLoader
+from torch.utils.data.sampler import Sampler
 
 # Atom feature sizes
 ATOMIC_SYMBOLS = ['H', 'C', 'N', 'O', 'F', 'Si', 'P', 'S', 'Cl', 'Br', 'I']
@@ -304,6 +306,21 @@ class MolDataset(Dataset):
         return self.process_key(key)
 
 
+class StereoSampler(Sampler):
+
+    def __init__(self, data_source):
+        self.data_source = data_source
+
+    def __iter__(self):
+        groups = [[i, i + 1] for i in range(0, len(self.data_source), 2)]
+        np.random.shuffle(groups)
+        indices = list(chain(*groups))
+        return iter(indices)
+
+    def __len__(self):
+        return len(self.data_source)
+
+
 def construct_loader(args, modes=('train', 'val')):
 
     if isinstance(modes, str):
@@ -321,7 +338,8 @@ def construct_loader(args, modes=('train', 'val')):
                             batch_size=args.batch_size,
                             shuffle=not args.no_shuffle if mode == 'train' else False,
                             num_workers=args.num_workers,
-                            pin_memory=True)
+                            pin_memory=True,
+                            sampler=StereoSampler(dataset) if args.shuffle_pairs else None)
         loaders.append(loader)
 
     if len(loaders) == 1:
