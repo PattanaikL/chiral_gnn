@@ -31,7 +31,7 @@ class GCNConv(MessagePassing):
         x = self.propagate(edge_index, x=x, edge_attr=edge_attr, norm=norm)
 
         if self.tetra:
-            tetra_ids = parity_atoms.nonzero().squeeze()
+            tetra_ids = parity_atoms.nonzero().squeeze(1)
             if tetra_ids.nelement() != 0:
                 x[tetra_ids] = self.tetra_message(x, edge_index, edge_attr, tetra_ids, parity_atoms)
 
@@ -82,7 +82,7 @@ class GINEConv(MessagePassing):
         x_new = self.propagate(edge_index, x=x, edge_attr=edge_attr)
 
         if self.tetra:
-            tetra_ids = parity_atoms.nonzero().squeeze()
+            tetra_ids = parity_atoms.nonzero().squeeze(1)
             if tetra_ids.nelement() != 0:
                 x_new[tetra_ids] = self.tetra_message(x, edge_index, edge_attr, tetra_ids, parity_atoms)
 
@@ -126,7 +126,7 @@ class DMPNNConv(MessagePassing):
         a_message = self.propagate(edge_index, x=None, edge_attr=edge_attr)
 
         if self.tetra:
-            tetra_ids = parity_atoms.nonzero().squeeze()
+            tetra_ids = parity_atoms.nonzero().squeeze(1)
             if tetra_ids.nelement() != 0:
                 a_message[tetra_ids] = self.tetra_message(x, edge_index, edge_attr, tetra_ids, parity_atoms)
 
