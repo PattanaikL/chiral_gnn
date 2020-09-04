@@ -32,7 +32,8 @@ class GCNConv(MessagePassing):
 
         if self.tetra:
             tetra_ids = parity_atoms.nonzero().squeeze()
-            x[tetra_ids] = self.tetra_message(x, edge_index, edge_attr, tetra_ids, parity_atoms)
+            if tetra_ids.nelement() != 0:
+                x[tetra_ids] = self.tetra_message(x, edge_index, edge_attr, tetra_ids, parity_atoms)
 
         return self.batch_norm(x), edge_attr
 
@@ -82,7 +83,8 @@ class GINEConv(MessagePassing):
 
         if self.tetra:
             tetra_ids = parity_atoms.nonzero().squeeze()
-            x_new[tetra_ids] = self.tetra_message(x, edge_index, edge_attr, tetra_ids, parity_atoms)
+            if tetra_ids.nelement() != 0:
+                x_new[tetra_ids] = self.tetra_message(x, edge_index, edge_attr, tetra_ids, parity_atoms)
 
         x = self.mlp((1 + self.eps) * x + x_new)
         return self.batch_norm(x), edge_attr
@@ -125,7 +127,8 @@ class DMPNNConv(MessagePassing):
 
         if self.tetra:
             tetra_ids = parity_atoms.nonzero().squeeze()
-            a_message[tetra_ids] = self.tetra_message(x, edge_index, edge_attr, tetra_ids, parity_atoms)
+            if tetra_ids.nelement() != 0:
+                a_message[tetra_ids] = self.tetra_message(x, edge_index, edge_attr, tetra_ids, parity_atoms)
 
         rev_message = torch.flip(edge_attr.view(edge_attr.size(0) // 2, 2, -1), dims=[1]).view(edge_attr.size(0), -1)
         return a_message, self.mlp(a_message[row] - rev_message)
