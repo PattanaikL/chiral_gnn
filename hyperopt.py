@@ -124,7 +124,7 @@ if __name__ == '__main__':
         study = joblib.load(os.path.join(args.hyperopt_dir, "study.pkl"))
     else:
         study = optuna.create_study(
-            pruner=optuna.pruners.HyperbandPruner(max_resource=args.n_epochs),
+            pruner=optuna.pruners.HyperbandPruner(min_resource=5, max_resource=args.n_epochs, reduction_factor=2),
             sampler=optuna.samplers.CmaEsSampler()
         )
     joblib.dump(study, os.path.join(args.hyperopt_dir, "study.pkl"))
