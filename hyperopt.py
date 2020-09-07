@@ -73,6 +73,7 @@ def optimize(trial, args):
 
         # handle pruning based on the intermediate value
         if trial.should_prune():
+            train_logger.handlers = []
             raise optuna.TrialPruned()
 
     train_logger.info(f"Best Validation Loss {best_val_loss} on Epoch {best_epoch}")
