@@ -1,6 +1,5 @@
 from torch_geometric.nn import MessagePassing
 from torch_geometric.utils import degree
-from torch_geometric.utils import to_dense_adj
 
 import torch
 import torch.nn as nn
@@ -57,8 +56,10 @@ class GCNConv(MessagePassing):
 
         # calculate reps
         edge_ids = torch.cat([tetra_nei_ids.view(1, -1), tetra_ids.repeat_interleave(4).unsqueeze(0)], dim=0)
-        dense_edge_attr = to_dense_adj(edge_index, batch=None, edge_attr=edge_attr).squeeze(0)
-        edge_reps = dense_edge_attr[edge_ids[0], edge_ids[1], :].view(tetra_nei_ids.size(0), 4, -1)
+        # dense_edge_attr = to_dense_adj(edge_index, batch=None, edge_attr=edge_attr).squeeze(0)
+        # edge_reps = dense_edge_attr[edge_ids[0], edge_ids[1], :].view(tetra_nei_ids.size(0), 4, -1)
+        attr_ids = [torch.where((a == edge_index.t()).all(dim=1))[0] for a in edge_ids.t()]
+        edge_reps = edge_attr[attr_ids, :].view(tetra_nei_ids.size(0), 4, -1)
         reps = x[tetra_nei_ids] + edge_reps
 
         return t_norm.unsqueeze(-1) * self.tetra_update(reps)
@@ -103,8 +104,10 @@ class GINEConv(MessagePassing):
 
         # calculate reps
         edge_ids = torch.cat([tetra_nei_ids.view(1, -1), tetra_ids.repeat_interleave(4).unsqueeze(0)], dim=0)
-        dense_edge_attr = to_dense_adj(edge_index, batch=None, edge_attr=edge_attr).squeeze(0)
-        edge_reps = dense_edge_attr[edge_ids[0], edge_ids[1], :].view(tetra_nei_ids.size(0), 4, -1)
+        # dense_edge_attr = to_dense_adj(edge_index, batch=None, edge_attr=edge_attr).squeeze(0)
+        # edge_reps = dense_edge_attr[edge_ids[0], edge_ids[1], :].view(tetra_nei_ids.size(0), 4, -1)
+        attr_ids = [torch.where((a == edge_index.t()).all(dim=1))[0] for a in edge_ids.t()]
+        edge_reps = edge_attr[attr_ids, :].view(tetra_nei_ids.size(0), 4, -1)
         reps = x[tetra_nei_ids] + edge_reps
 
         return self.tetra_update(reps)
@@ -147,7 +150,9 @@ class DMPNNConv(MessagePassing):
 
         # calculate reps
         edge_ids = torch.cat([tetra_nei_ids.view(1, -1), tetra_ids.repeat_interleave(4).unsqueeze(0)], dim=0)
-        dense_edge_attr = to_dense_adj(edge_index, batch=None, edge_attr=edge_attr).squeeze(0)
-        edge_reps = dense_edge_attr[edge_ids[0], edge_ids[1], :].view(tetra_nei_ids.size(0), 4, -1)
+        # dense_edge_attr = to_dense_adj(edge_index, batch=None, edge_attr=edge_attr).squeeze(0)
+        # edge_reps = dense_edge_attr[edge_ids[0], edge_ids[1], :].view(tetra_nei_ids.size(0), 4, -1)
+        attr_ids = [torch.where((a == edge_index.t()).all(dim=1))[0] for a in edge_ids.t()]
+        edge_reps = edge_attr[attr_ids, :].view(tetra_nei_ids.size(0), 4, -1)
 
         return self.tetra_update(edge_reps)
