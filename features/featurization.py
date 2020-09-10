@@ -174,7 +174,8 @@ class MolGraph:
 
         # add chiral hydrogens
         H_ids = [a.GetIdx() for a in mol.GetAtoms() if CHIRALTAG_PARITY[a.GetChiralTag()] != 0]
-        mol = Chem.AddHs(mol, onlyOnAtoms=H_ids)
+        if H_ids:
+            mol = Chem.AddHs(mol, onlyOnAtoms=H_ids)
 
         # remove stereochem label from atoms with less/more than 4 neighbors
         for i in H_ids:
