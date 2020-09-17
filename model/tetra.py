@@ -13,6 +13,9 @@ class TetraPermuter(nn.Module):
         self.device = device
         self.drop = nn.Dropout(p=0.2)
         self.reset_parameters()
+        self.mlp_out = nn.Sequential(nn.Linear(hidden, hidden),
+                                     nn.BatchNorm1d(hidden),
+                                     nn.ReLU())
 
         self.tetra_perms = torch.tensor([[0, 1, 2, 3],
                                          [0, 2, 3, 1],
@@ -39,7 +42,7 @@ class TetraPermuter(nn.Module):
         for p in self.tetra_perms:
             nei_messages_list = [self.drop(F.tanh(l(t))) for l, t in zip(self.W_bs, torch.split(x[:, p, :], 1, dim=1))]
             nei_messages += self.drop(F.relu(torch.cat(nei_messages_list, dim=1).sum(dim=1)))
-        return nei_messages / 12.
+        return self.mlp_out(nei_messages / 3.)
 
 
 class ConcatTetraPermuter(nn.Module):
@@ -52,6 +55,9 @@ class ConcatTetraPermuter(nn.Module):
         self.hidden = hidden
         self.device = device
         self.drop = nn.Dropout(p=0.2)
+        self.mlp_out = nn.Sequential(nn.Linear(hidden, hidden),
+                                     nn.BatchNorm1d(hidden),
+                                     nn.ReLU())
 
         self.tetra_perms = torch.tensor([[0, 1, 2, 3],
                                          [0, 2, 3, 1],
@@ -72,13 +78,17 @@ class ConcatTetraPermuter(nn.Module):
 
         for p in self.tetra_perms:
             nei_messages += self.drop(F.relu(self.W_bs(x[:, p, :].view(x.size(0), self.hidden*4))))
-        return nei_messages / 12.
+        return self.mlp_out(nei_messages / 3.)
 
 
 class TetraDifferencesProduct(nn.Module):
 
-    def __init__(self):
+    def __init__(self, hidden):
         super(TetraDifferencesProduct, self).__init__()
+
+        self.mlp_out = nn.Sequential(nn.Linear(hidden, hidden),
+                                     nn.BatchNorm1d(hidden),
+                                     nn.ReLU())
 
     def forward(self, x):
 
@@ -91,7 +101,7 @@ class TetraDifferencesProduct(nn.Module):
             for j in range(i + 1, 4):
                 message_tetra = torch.mul(message_tetra, (message_tetra_nbs[i] - message_tetra_nbs[j]))
         message_tetra = torch.sign(message_tetra) * torch.pow(torch.abs(message_tetra) + 1e-6, 1 / 6)
-        return message_tetra
+        return self.mlp_out(message_tetra)
 
 
 def get_tetra_update(args):
@@ -101,6 +111,6 @@ def get_tetra_update(args):
     elif args.message == 'tetra_permute_concat':
         return ConcatTetraPermuter(args.hidden_size, args.device)
     elif args.message == 'tetra_pd':
-        return TetraDifferencesProduct()
+        return TetraDifferencesProduct(args.hidden_size)
     else:
         raise ValueError("Invalid message type.")
