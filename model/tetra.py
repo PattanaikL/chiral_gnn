@@ -90,7 +90,8 @@ class TetraDifferencesProduct(nn.Module):
 
         self.mlp_out = nn.Sequential(nn.Linear(hidden, hidden),
                                      nn.BatchNorm1d(hidden),
-                                     nn.ReLU())
+                                     nn.ReLU(),
+                                     nn.Linear(hidden, hidden))
 
     def forward(self, x):
 
