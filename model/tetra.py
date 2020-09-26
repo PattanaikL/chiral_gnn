@@ -15,7 +15,8 @@ class TetraPermuter(nn.Module):
         self.reset_parameters()
         self.mlp_out = nn.Sequential(nn.Linear(hidden, hidden),
                                      nn.BatchNorm1d(hidden),
-                                     nn.ReLU())
+                                     nn.ReLU(),
+                                     nn.Linear(hidden, hidden))
 
         self.tetra_perms = torch.tensor([[0, 1, 2, 3],
                                          [0, 2, 3, 1],
@@ -57,7 +58,8 @@ class ConcatTetraPermuter(nn.Module):
         self.drop = nn.Dropout(p=0.2)
         self.mlp_out = nn.Sequential(nn.Linear(hidden, hidden),
                                      nn.BatchNorm1d(hidden),
-                                     nn.ReLU())
+                                     nn.ReLU(),
+                                     nn.Linear(hidden, hidden))
 
         self.tetra_perms = torch.tensor([[0, 1, 2, 3],
                                          [0, 2, 3, 1],
@@ -93,7 +95,7 @@ class TetraDifferencesProduct(nn.Module):
     def forward(self, x):
 
         indices = torch.arange(4).to(x.device)
-        message_tetra_nbs = [x.index_select(dim=1, index=i).squeeze() for i in indices]
+        message_tetra_nbs = [x.index_select(dim=1, index=i).squeeze(1) for i in indices]
         message_tetra = torch.ones_like(message_tetra_nbs[0])
 
         # note: this will zero out reps for chiral centers with multiple carbon neighbors on first pass
