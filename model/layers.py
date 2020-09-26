@@ -24,15 +24,16 @@ class GCNConv(MessagePassing):
 
         # Compute normalization
         row, col = edge_index
-        deg = degree(col, x.size(0), dtype=x.dtype)
+        deg = degree(col, x.size(0), dtype=x.dtype) + 1
         deg_inv_sqrt = deg.pow(-0.5)
         norm = deg_inv_sqrt[row] * deg_inv_sqrt[col]
-        x = self.propagate(edge_index, x=x, edge_attr=edge_attr, norm=norm)
+        x_new = self.propagate(edge_index, x=x, edge_attr=edge_attr, norm=norm)
 
         if self.tetra:
             tetra_ids = parity_atoms.nonzero().squeeze(1)
             if tetra_ids.nelement() != 0:
-                x[tetra_ids] = self.tetra_message(x, edge_index, edge_attr, tetra_ids, parity_atoms)
+                x_new[tetra_ids] = self.tetra_message(x, edge_index, edge_attr, tetra_ids, parity_atoms)
+        x = x_new + F.relu(x)
 
         return self.batch_norm(x), edge_attr
 
