@@ -18,11 +18,13 @@ from torch.utils.data.sampler import Sampler
 
 # Atom feature sizes
 ATOMIC_SYMBOLS = ['H', 'C', 'N', 'O', 'F', 'Si', 'P', 'S', 'Cl', 'Br', 'I']
+CIP_CHIRALITY = ['R', 'S']
 ATOM_FEATURES = {
     'atomic_num': ATOMIC_SYMBOLS,
     'degree': [0, 1, 2, 3, 4, 5],
     'formal_charge': [-1, -2, 1, 2, 0],
-    'chiral_tag': [0, 1, 2, 3], 
+    'chiral_tag': [0, 1, 2, 3],
+    'global_chiral_tag': CIP_CHIRALITY,
     'num_Hs': [0, 1, 2, 3, 4],
     'hybridization': [
         Chem.rdchem.HybridizationType.SP,
@@ -58,10 +60,7 @@ def get_bond_fdim(args: Namespace) -> int:
 
     :param: Arguments.
     """
-    if args.chiral_features:
-        return 7
-    else:
-        return 7
+    return 7
 
 
 def onek_encoding_unk(value, choices: List) -> List[int]:
@@ -97,6 +96,11 @@ def atom_features(atom: Chem.rdchem.Atom, args) -> List[Union[bool, int, float]]
            [atom.GetMass() * 0.01]  # scaled to about the same range as other features
     if args.chiral_features:
         features += onek_encoding_unk(int(atom.GetChiralTag()), ATOM_FEATURES['chiral_tag'])
+    if args.global_chiral_features:
+        if atom.HasProp('_CIPCode'):
+            features += onek_encoding_unk(atom.GetProp('_CIPCode'), ATOM_FEATURES['global_chiral_tag'])
+        else:
+            features += onek_encoding_unk(None, ATOM_FEATURES['global_chiral_tag'])
     return features
 
 def parity_features(atom: Chem.rdchem.Atom) -> int:

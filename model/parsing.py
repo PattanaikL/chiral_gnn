@@ -56,7 +56,9 @@ def add_train_args(parser: ArgumentParser):
                         choices=['sum', 'tetra_pd', 'tetra_permute', 'tetra_permute_concat'],
                         help='How to pass neighbor messages')
     parser.add_argument('--chiral_features', action='store_true', default=False,
-                        help='Use chiral atom and bond features')
+                        help='Use local chiral atom features')
+    parser.add_argument('--global_chiral_features', action='store_true', default=False,
+                        help='Use global chiral atom features')
 
 
 def modify_train_args(args: Namespace):
