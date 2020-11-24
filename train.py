@@ -37,11 +37,6 @@ for key, value in scheduler.state_dict().items():
     logger.info(f'{key}: {value}')
 logger.info('')
 
-# multi gpu training
-if torch.cuda.device_count() > 1:
-    logger.info(f'Using {torch.cuda.device_count()} GPUs for training...')
-    model = torch.nn.DataParallel(model)
-
 # train
 logger.info("Starting training...")
 for epoch in range(0, args.n_epochs):
