@@ -1,4 +1,4 @@
-# chiral gnn
+# Chirality-aware message passing networks
 Custom aggregation functions for molecules with tetrahedral chirality ([arXiv](https://arxiv.org/abs/2012.00094))
 
 ## Requirements
