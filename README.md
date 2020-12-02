@@ -2,9 +2,10 @@
 Custom aggregation functions for molecules with tetrahedral chirality ([arXiv](https://arxiv.org/abs/2012.00094))
 
 ## Requirements
-* python (version=3.7)
-* pytorch (version=1.14)
-* rdkit (version=2020.03.2)
+* python (version>=3.7)
+* pytorch (version>=1.14)
+* rdkit (version>=2020.03.2)
+* pytorch-geometric (version>=1.6.0)
 
 ## Installation
 First, clone the repository:
