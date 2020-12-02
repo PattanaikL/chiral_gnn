@@ -74,8 +74,8 @@ echo "Using CUDA version: $CUDA_VERSION"
 TORCH_VERSION=$(python -c "import torch; print(torch.__version__)")
 echo "Using PyTorch version: $TORCH_VERSION"
 
-pip install torch-scatter==latest+$CUDA_VERSION -f https://pytorch-geometric.com/whl/torch-$TORCH_VERSION.html
-pip install torch-sparse==latest+$CUDA_VERSION -f https://pytorch-geometric.com/whl/torch-$TORCH_VERSION.html
-pip install torch-cluster==latest+$CUDA_VERSION -f https://pytorch-geometric.com/whl/torch-$TORCH_VERSION.html
-pip install torch-spline-conv==latest+$CUDA_VERSION -f https://pytorch-geometric.com/whl/torch-$TORCH_VERSION.html
+pip install torch-scatter -f https://pytorch-geometric.com/whl/torch-${TORCH_VERSION}+${CUDA_VERSION}.html
+pip install torch-sparse -f https://pytorch-geometric.com/whl/torch-${TORCH_VERSION}+${CUDA_VERSION}.html
+pip install torch-cluster -f https://pytorch-geometric.com/whl/torch-${TORCH_VERSION}+${CUDA_VERSION}.html
+pip install torch-spline-conv -f https://pytorch-geometric.com/whl/torch-${TORCH_VERSION}+${CUDA_VERSION}.html
 pip install torch-geometric
