@@ -1,3 +1,4 @@
+# Developed by Kevin A. Spiekermann
 # This script does the following tasks:
 # 	- creates the conda
 # 	- prompts user for desired CUDA version
