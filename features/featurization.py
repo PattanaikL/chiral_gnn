@@ -168,6 +168,7 @@ class MolGraph:
         self.b2a = []  # mapping from bond index to the index of the atom the bond is coming from
         self.b2revb = []  # mapping from bond index to the index of the reverse bond
         self.parity_atoms = []  # mapping from atom index to CW (+1), CCW (-1) or undefined tetra (0)
+        self.n_neighbors = [] # mapping from atom index to number of neighbors
         self.edge_index = []  # list of tuples indicating presence of bonds
 
         # Convert smiles to molecule
@@ -190,7 +191,13 @@ class MolGraph:
         # Get atom features
         for i, atom in enumerate(mol.GetAtoms()):
             self.f_atoms.append(atom_features(atom, args))
-            self.parity_atoms.append(parity_features(atom))
+            parity_feature = parity_features(atom)
+            self.parity_atoms.append(parity_feature)
+            if parity_feature == 0:
+                self.n_neighbors.append(len(atom.GetNeighbors()))
+            else:
+                self.n_neighbors.append(0)
+
         self.f_atoms = [self.f_atoms[i] for i in range(self.n_atoms)]
 
         for _ in range(self.n_atoms):
@@ -297,6 +304,7 @@ class MolDataset(Dataset):
         data.edge_attr = torch.tensor(molgraph.f_bonds, dtype=torch.float)
         data.y = torch.tensor([self.labels[key]], dtype=torch.float)
         data.parity_atoms = torch.tensor(molgraph.parity_atoms, dtype=torch.long)
+        data.n_neighbors = torch.tensor(molgraph.n_neighbors, dtype=torch.long)
         data.smiles = self.smiles[key]
 
         return data
