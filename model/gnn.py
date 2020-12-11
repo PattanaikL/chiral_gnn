@@ -64,7 +64,7 @@ class GNN(nn.Module):
         self.ffn = nn.Linear(self.mult * self.hidden_size, 1)
 
     def forward(self, data):
-        x, edge_index, edge_attr, batch, parity_atoms = data.x, data.edge_index, data.edge_attr, data.batch, data.parity_atoms
+        x, edge_index, edge_attr, batch, parity_atoms, n_neighbors = data.x, data.edge_index, data.edge_attr, data.batch, data.parity_atoms, data.n_neighbors
 
         if self.gnn_type == 'dmpnn':
             row, col = edge_index
@@ -80,7 +80,7 @@ class GNN(nn.Module):
         # convolutions
         for l in range(self.depth):
 
-            x_h, edge_attr_h = self.convs[l](x_list[-1], edge_index, edge_attr_list[-1], parity_atoms)
+            x_h, edge_attr_h = self.convs[l](x_list[-1], edge_index, edge_attr_list[-1], parity_atoms, n_neighbors)
             h = edge_attr_h if self.gnn_type == 'dmpnn' else x_h
 
             if l == self.depth - 1:
@@ -97,7 +97,7 @@ class GNN(nn.Module):
 
         # dmpnn edge -> node aggregation
         if self.gnn_type == 'dmpnn':
-            h, _ = self.edge_to_node(x_list[-1], edge_index, h, parity_atoms)
+            h, _ = self.edge_to_node(x_list[-1], edge_index, h, parity_atoms, n_neighbors)
 
         if self.task == 'regression':
             return self.ffn(self.pool(h, batch)).squeeze(-1)
