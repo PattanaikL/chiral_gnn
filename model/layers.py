@@ -15,9 +15,15 @@ class GCNConv(MessagePassing):
         self.batch_norm = nn.BatchNorm1d(args.hidden_size)
         self.tetra = args.tetra
         if self.tetra:
+            self.n_nums = dict()
+            self.n_nums["mono"] = 1
+            self.n_nums["di"] = 2
+            self.n_nums["tri"] = 3
+            self.n_nums["tetra_nonchiral"] = 4
+            self.n_nums["tetra_chiral"] = 4
             self.tetra_update = get_tetra_update(args)
 
-    def forward(self, x, edge_index, edge_attr, parity_atoms):
+    def forward(self, x, edge_index, edge_attr, parity_atoms, n_neighbors):
 
         # no edge updates
         x = self.linear(x)
@@ -30,9 +36,17 @@ class GCNConv(MessagePassing):
         x_new = self.propagate(edge_index, x=x, edge_attr=edge_attr, norm=norm)
 
         if self.tetra:
-            tetra_ids = parity_atoms.nonzero().squeeze(1)
-            if tetra_ids.nelement() != 0:
-                x_new[tetra_ids] = self.tetra_message(x, edge_index, edge_attr, tetra_ids, parity_atoms)
+            n_ids = dict()
+            n_ids["tetra_chiral"] = parity_atoms.nonzero().squeeze(1)
+            n_ids["mono"] = torch.where(n_neighbors == self.n_nums["mono"])[0]
+            n_ids["di"] = torch.where(n_neighbors == self.n_nums["di"])[0]
+            n_ids["tri"] = torch.where(n_neighbors == self.n_nums["tri"])[0]
+            n_ids["tetra_nonchiral"] = torch.where(n_neighbors == self.n_nums["tetra_nonchiral"])[0]
+            
+            for n_neighbor, ids in n_ids.items():
+                if ids.nelement() != 0:
+                    x_new[ids] = self.tetra_message(x, edge_index, edge_attr, ids, parity_atoms, n_neighbor)
+                
         x = x_new + F.relu(x)
 
         return self.batch_norm(x), edge_attr
@@ -40,30 +54,31 @@ class GCNConv(MessagePassing):
     def message(self, x_j, edge_attr, norm):
         return norm.view(-1, 1) * F.relu(x_j + edge_attr)
 
-    def tetra_message(self, x, edge_index, edge_attr, tetra_ids, parity_atoms):
-
+    def tetra_message(self, x, edge_index, edge_attr, ids, parity_atoms, n_neighbor):   
+        
         row, col = edge_index
-        tetra_nei_ids = torch.cat([row[col == i].unsqueeze(0) for i in range(x.size(0)) if i in tetra_ids])
-
+        nei_ids = torch.cat([row[col == i].unsqueeze(0) for i in range(x.size(0)) if i in ids])
+        
         # calculate pseudo tetra degree aligned with GCN method
         deg = degree(col, x.size(0), dtype=x.dtype)
-        t_deg = deg[tetra_nei_ids]
-        t_deg_inv_sqrt = t_deg.pow(-0.5)
-        t_norm = 0.5 * t_deg_inv_sqrt.mean(dim=1)
+        n_deg = deg[nei_ids]
+        n_deg_inv_sqrt = n_deg.pow(-0.5)
+        n_norm = 0.5 * n_deg_inv_sqrt.mean(dim=1)
 
         # switch entries for -1 rdkit labels
-        ccw_mask = parity_atoms[tetra_ids] == -1
-        tetra_nei_ids[ccw_mask] = tetra_nei_ids.clone()[ccw_mask][:, [1, 0, 2, 3]]
+        if n_neighbor == "tetra_chiral":
+            ccw_mask = parity_atoms[ids] == -1
+            nei_ids[ccw_mask] = nei_ids.clone()[ccw_mask][:, [1, 0, 2, 3]]
 
         # calculate reps
-        edge_ids = torch.cat([tetra_nei_ids.view(1, -1), tetra_ids.repeat_interleave(4).unsqueeze(0)], dim=0)
+        edge_ids = torch.cat([nei_ids.view(1, -1), ids.repeat_interleave(self.n_nums[n_neighbor]).unsqueeze(0)], dim=0)
         # dense_edge_attr = to_dense_adj(edge_index, batch=None, edge_attr=edge_attr).squeeze(0)
         # edge_reps = dense_edge_attr[edge_ids[0], edge_ids[1], :].view(tetra_nei_ids.size(0), 4, -1)
         attr_ids = [torch.where((a == edge_index.t()).all(dim=1))[0] for a in edge_ids.t()]
-        edge_reps = edge_attr[attr_ids, :].view(tetra_nei_ids.size(0), 4, -1)
-        reps = x[tetra_nei_ids] + edge_reps
+        edge_reps = edge_attr[attr_ids, :].view(nei_ids.size(0), self.n_nums[n_neighbor], -1)
+        reps = x[nei_ids] + edge_reps
 
-        return t_norm.unsqueeze(-1) * self.tetra_update(reps)
+        return n_norm.unsqueeze(-1) * self.tetra_update(reps, n_neighbor)
 
 
 class GINEConv(MessagePassing):
@@ -77,16 +92,27 @@ class GINEConv(MessagePassing):
         self.batch_norm = nn.BatchNorm1d(args.hidden_size)
         self.tetra = args.tetra
         if self.tetra:
+            self.n_nums = dict()
+            self.n_nums["di"] = 2
+            self.n_nums["tri"] = 3
+            self.n_nums["tetra_nonchiral"] = 4
+            self.n_nums["tetra_chiral"] = 4
             self.tetra_update = get_tetra_update(args)
 
-    def forward(self, x, edge_index, edge_attr, parity_atoms):
+    def forward(self, x, edge_index, edge_attr, parity_atoms, n_neighbors):
         # no edge updates
         x_new = self.propagate(edge_index, x=x, edge_attr=edge_attr)
 
         if self.tetra:
-            tetra_ids = parity_atoms.nonzero().squeeze(1)
-            if tetra_ids.nelement() != 0:
-                x_new[tetra_ids] = self.tetra_message(x, edge_index, edge_attr, tetra_ids, parity_atoms)
+            n_ids = dict()
+            n_ids["tetra_chiral"] = parity_atoms.nonzero().squeeze(1)
+            n_ids["di"] = torch.where(n_neighbors == self.n_nums["di"])[0]
+            n_ids["tri"] = torch.where(n_neighbors == self.n_nums["tri"])[0]
+            n_ids["tetra_nonchiral"] = torch.where(n_neighbors == self.n_nums["tetra_nonchiral"])[0]
+            
+            for n_neighbor, ids in n_ids.items():
+                if ids.nelement() != 0:
+                    x_new[ids] = self.tetra_message(x, edge_index, edge_attr, ids, parity_atoms, n_neighbor)
 
         x = self.mlp((1 + self.eps) * x + x_new)
         return self.batch_norm(x), edge_attr
@@ -94,24 +120,25 @@ class GINEConv(MessagePassing):
     def message(self, x_j, edge_attr):
         return F.relu(x_j + edge_attr)
 
-    def tetra_message(self, x, edge_index, edge_attr, tetra_ids, parity_atoms):
+    def tetra_message(self, x, edge_index, edge_attr, ids, parity_atoms, n_neighbor):
 
         row, col = edge_index
-        tetra_nei_ids = torch.cat([row[col == i].unsqueeze(0) for i in range(x.size(0)) if i in tetra_ids])
+        nei_ids = torch.cat([row[col == i].unsqueeze(0) for i in range(x.size(0)) if i in ids])
 
         # switch entries for -1 rdkit labels
-        ccw_mask = parity_atoms[tetra_ids] == -1
-        tetra_nei_ids[ccw_mask] = tetra_nei_ids.clone()[ccw_mask][:, [1, 0, 2, 3]]
+        if n_neighbor == "tetra_chiral":
+            ccw_mask = parity_atoms[ids] == -1
+            nei_ids[ccw_mask] = nei_ids.clone()[ccw_mask][:, [1, 0, 2, 3]]
 
         # calculate reps
-        edge_ids = torch.cat([tetra_nei_ids.view(1, -1), tetra_ids.repeat_interleave(4).unsqueeze(0)], dim=0)
+        edge_ids = torch.cat([nei_ids.view(1, -1), ids.repeat_interleave(self.n_nums[n_neighbor]).unsqueeze(0)], dim=0)
         # dense_edge_attr = to_dense_adj(edge_index, batch=None, edge_attr=edge_attr).squeeze(0)
         # edge_reps = dense_edge_attr[edge_ids[0], edge_ids[1], :].view(tetra_nei_ids.size(0), 4, -1)
         attr_ids = [torch.where((a == edge_index.t()).all(dim=1))[0] for a in edge_ids.t()]
-        edge_reps = edge_attr[attr_ids, :].view(tetra_nei_ids.size(0), 4, -1)
-        reps = x[tetra_nei_ids] + edge_reps
+        edge_reps = edge_attr[attr_ids, :].view(nei_ids.size(0), self.n_nums[n_neighbor], -1)
+        reps = x[nei_ids] + edge_reps
 
-        return self.tetra_update(reps)
+        return self.tetra_update(reps, n_neighbor)
 
 
 class DMPNNConv(MessagePassing):
@@ -123,16 +150,29 @@ class DMPNNConv(MessagePassing):
                                  nn.ReLU())
         self.tetra = args.tetra
         if self.tetra:
+            self.n_nums = dict()
+            self.n_nums["mono"] = 1
+            self.n_nums["di"] = 2
+            self.n_nums["tri"] = 3
+            self.n_nums["tetra_nonchiral"] = 4
+            self.n_nums["tetra_chiral"] = 4
             self.tetra_update = get_tetra_update(args)
 
-    def forward(self, x, edge_index, edge_attr, parity_atoms):
+    def forward(self, x, edge_index, edge_attr, parity_atoms, n_neighbors):
         row, col = edge_index
         a_message = self.propagate(edge_index, x=None, edge_attr=edge_attr)
 
         if self.tetra:
-            tetra_ids = parity_atoms.nonzero().squeeze(1)
-            if tetra_ids.nelement() != 0:
-                a_message[tetra_ids] = self.tetra_message(x, edge_index, edge_attr, tetra_ids, parity_atoms)
+            n_ids = dict()
+            n_ids["tetra_chiral"] = parity_atoms.nonzero().squeeze(1)
+            n_ids["mono"] = torch.where(n_neighbors == self.n_nums["mono"])[0]
+            n_ids["di"] = torch.where(n_neighbors == self.n_nums["di"])[0]
+            n_ids["tri"] = torch.where(n_neighbors == self.n_nums["tri"])[0]
+            n_ids["tetra_nonchiral"] = torch.where(n_neighbors == self.n_nums["tetra_nonchiral"])[0]
+            
+            for n_neighbor, ids in n_ids.items():
+                if ids.nelement() != 0:
+                    a_message[ids] = self.tetra_message(x, edge_index, edge_attr, ids, parity_atoms, n_neighbor)
 
         rev_message = torch.flip(edge_attr.view(edge_attr.size(0) // 2, 2, -1), dims=[1]).view(edge_attr.size(0), -1)
         return a_message, self.mlp(a_message[row] - rev_message)
@@ -140,20 +180,21 @@ class DMPNNConv(MessagePassing):
     def message(self, x_j, edge_attr):
         return F.relu(self.lin(edge_attr))
 
-    def tetra_message(self, x, edge_index, edge_attr, tetra_ids, parity_atoms):
+    def tetra_message(self, x, edge_index, edge_attr, ids, parity_atoms, n_neighbor):
 
         row, col = edge_index
-        tetra_nei_ids = torch.cat([row[col == i].unsqueeze(0) for i in range(x.size(0)) if i in tetra_ids])
+        nei_ids = torch.cat([row[col == i].unsqueeze(0) for i in range(x.size(0)) if i in ids])
 
         # switch entries for -1 rdkit labels
-        ccw_mask = parity_atoms[tetra_ids] == -1
-        tetra_nei_ids[ccw_mask] = tetra_nei_ids.clone()[ccw_mask][:, [1, 0, 2, 3]]
+        if n_neighbor == "tetra_chiral":
+            ccw_mask = parity_atoms[ids] == -1
+            nei_ids[ccw_mask] = nei_ids.clone()[ccw_mask][:, [1, 0, 2, 3]]
 
         # calculate reps
-        edge_ids = torch.cat([tetra_nei_ids.view(1, -1), tetra_ids.repeat_interleave(4).unsqueeze(0)], dim=0)
+        edge_ids = torch.cat([nei_ids.view(1, -1), ids.repeat_interleave(self.n_nums[n_neighbor]).unsqueeze(0)], dim=0)
         # dense_edge_attr = to_dense_adj(edge_index, batch=None, edge_attr=edge_attr).squeeze(0)
         # edge_reps = dense_edge_attr[edge_ids[0], edge_ids[1], :].view(tetra_nei_ids.size(0), 4, -1)
         attr_ids = [torch.where((a == edge_index.t()).all(dim=1))[0] for a in edge_ids.t()]
-        edge_reps = edge_attr[attr_ids, :].view(tetra_nei_ids.size(0), 4, -1)
+        edge_reps = edge_attr[attr_ids, :].view(nei_ids.size(0), self.n_nums[n_neighbor], -1)
 
-        return self.tetra_update(edge_reps)
+        return self.tetra_update(edge_reps, n_neighbor)
