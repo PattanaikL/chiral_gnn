@@ -59,6 +59,8 @@ def add_train_args(parser: ArgumentParser):
                         help='Use local chiral atom features')
     parser.add_argument('--global_chiral_features', action='store_true', default=False,
                         help='Use global chiral atom features')
+    parser.add_argument('--shift', type=str, default='C',
+                        help='Which NMR shift to predict')
 
 
 def modify_train_args(args: Namespace):

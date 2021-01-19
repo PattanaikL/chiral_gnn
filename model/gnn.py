@@ -51,7 +51,7 @@ class GNN(nn.Module):
         elif self.graph_pool == "attn":
             self.pool = GlobalAttention(
                 gate_nn=torch.nn.Sequential(torch.nn.Linear(self.hidden_size, 2 * self.hidden_size),
-                                            torch.nn.BatchNorm1d(2 * self.hidden_size),
+                                            torch.nn.LayerNorm(2 * self.hidden_size),
                                             torch.nn.ReLU(),
                                             torch.nn.Linear(2 * self.hidden_size, 1)))
         elif self.graph_pool == "set2set":
@@ -99,7 +99,4 @@ class GNN(nn.Module):
         if self.gnn_type == 'dmpnn':
             h, _ = self.edge_to_node(x_list[-1], edge_index, h, parity_atoms)
 
-        if self.task == 'regression':
-            return self.ffn(self.pool(h, batch)).squeeze(-1)
-        elif self.task == 'classification':
-            return torch.sigmoid(self.ffn(self.pool(h, batch))).squeeze(-1)
+        return self.ffn(h).squeeze(-1)

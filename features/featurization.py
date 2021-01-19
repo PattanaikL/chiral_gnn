@@ -1,5 +1,7 @@
 from argparse import Namespace
 from typing import List, Tuple, Union
+import gzip
+import pickle
 
 from rdkit import Chem
 from rdkit.Chem.rdchem import ChiralType
@@ -14,7 +16,7 @@ from torch_geometric.data import Dataset, DataLoader
 from torch.utils.data.sampler import Sampler
 
 # Atom feature sizes
-ATOMIC_SYMBOLS = ['H', 'C', 'N', 'O', 'F', 'Si', 'P', 'S', 'Cl', 'Br', 'I']
+ATOMIC_SYMBOLS = ['H', 'C', 'B', 'N', 'O', 'F', 'P', 'S', 'Cl', 'Br', 'I']
 CIP_CHIRALITY = ['R', 'S']
 ATOM_FEATURES = {
     'atomic_num': ATOMIC_SYMBOLS,
@@ -57,7 +59,7 @@ def get_bond_fdim(args: Namespace) -> int:
 
     :param: Arguments.
     """
-    return 7
+    return 14
 
 
 def onek_encoding_unk(value, choices: List) -> List[int]:
@@ -86,8 +88,8 @@ def atom_features(atom: Chem.rdchem.Atom, args) -> List[Union[bool, int, float]]
     """
     features = onek_encoding_unk(atom.GetSymbol(), ATOM_FEATURES['atomic_num']) + \
            onek_encoding_unk(atom.GetTotalDegree(), ATOM_FEATURES['degree']) + \
-           onek_encoding_unk(atom.GetFormalCharge(), ATOM_FEATURES['formal_charge'])
-    features +=  onek_encoding_unk(int(atom.GetTotalNumHs()), ATOM_FEATURES['num_Hs']) + \
+           onek_encoding_unk(atom.GetFormalCharge(), ATOM_FEATURES['formal_charge']) + \
+           onek_encoding_unk(int(atom.GetTotalNumHs()), ATOM_FEATURES['num_Hs']) + \
            onek_encoding_unk(int(atom.GetHybridization()), ATOM_FEATURES['hybridization']) + \
            [1 if atom.GetIsAromatic() else 0] + \
            [atom.GetMass() * 0.01]  # scaled to about the same range as other features
@@ -132,8 +134,7 @@ def bond_features(bond: Chem.rdchem.Bond, args) -> List[Union[bool, int, float]]
             (bond.GetIsConjugated() if bt is not None else 0),
             (bond.IsInRing() if bt is not None else 0)
         ]
-        # if args.chiral_features:
-        #     fbond += onek_encoding_unk(int(bond.GetStereo()), list(range(6))) # remove global cis/trans tags
+        fbond += onek_encoding_unk(int(bond.GetStereo()), list(range(6)))
     return fbond
 
 
@@ -152,14 +153,13 @@ class MolGraph:
     - b2revb: A mapping from a bond index to the index of the reverse bond.
     """
 
-    def __init__(self, smiles: str, args: Namespace):
+    def __init__(self, mol_block: str, args: Namespace):
         """
         Computes the graph structure and featurization of a molecule.
 
         :param smiles: A smiles string.
         :param args: Arguments.
         """
-        self.smiles = smiles
         self.n_atoms = 0  # number of atoms
         self.n_bonds = 0  # number of bonds
         self.f_atoms = []  # mapping from atom index to atom features
@@ -170,15 +170,13 @@ class MolGraph:
         self.parity_atoms = []  # mapping from atom index to CW (+1), CCW (-1) or undefined tetra (0)
         self.edge_index = []  # list of tuples indicating presence of bonds
 
-        # Convert smiles to molecule
-        mol = Chem.MolFromSmiles(smiles)
-
-        # add chiral hydrogens
-        H_ids = [a.GetIdx() for a in mol.GetAtoms() if CHIRALTAG_PARITY[a.GetChiralTag()] != 0]
-        if H_ids:
-            mol = Chem.AddHs(mol, onlyOnAtoms=H_ids)
+        # Convert mol block to molecule with hydrogens
+        mol = Chem.MolFromMolBlock(mol_block)
+        mol = Chem.AddHs(mol)
+        self.smiles = Chem.MolToSmiles(mol)
 
         # remove stereochem label from atoms with less/more than 4 neighbors
+        H_ids = [a.GetIdx() for a in mol.GetAtoms() if CHIRALTAG_PARITY[a.GetChiralTag()] != 0]
         for i in H_ids:
             a = mol.GetAtomWithIdx(i)
             if len(a.GetNeighbors()) != 4:
@@ -267,26 +265,29 @@ class MolGraph:
 
 class MolDataset(Dataset):
 
-    def __init__(self, smiles, labels, args, mode='train'):
+    def __init__(self, mol_blocks, c_shifts, h_shifts, args, mode='train'):
         super(MolDataset, self).__init__()
 
         if args.split_path:
             self.split_idx = 0 if mode == 'train' else 1 if mode == 'val' else 2
             self.split = np.load(args.split_path, allow_pickle=True)[self.split_idx]
         else:
-            self.split = list(range(len(smiles)))  # fix this
-        self.smiles = [smiles[i] for i in self.split]
-        self.labels = [labels[i] for i in self.split]
-        self.data_map = {k: v for k, v in zip(range(len(self.smiles)), self.split)}
+            self.split = list(range(len(mol_blocks)))  # fix this
+        self.mol_blocks = [mol_blocks[i] for i in self.split]
+        self.c_shifts = [c_shifts[i] for i in self.split]
+        self.h_shifts = [h_shifts[i] for i in self.split]
+        self.data_map = {k: v for k, v in zip(range(len(self.mol_blocks)), self.split)}
         self.args = args
 
         if mode == 'train':
-            self.mean = np.mean(self.labels)
-            self.std = np.std(self.labels)
+            shifts = self.c_shifts if args.shift == 'C' else self.h_shifts
+            shifts_real = [s for arr in shifts for s in arr if s != -1000]
+            self.mean = np.mean(shifts_real)
+            self.std = np.std(shifts_real)
 
     def process_key(self, key):
-        smi = self.smiles[key]
-        molgraph = MolGraph(smi, self.args)
+        mol_block = self.mol_blocks[key]
+        molgraph = MolGraph(mol_block, self.args)
         mol = self.molgraph2data(molgraph, key)
         return mol
 
@@ -295,14 +296,17 @@ class MolDataset(Dataset):
         data.x = torch.tensor(molgraph.f_atoms, dtype=torch.float)
         data.edge_index = torch.tensor(molgraph.edge_index, dtype=torch.long).t().contiguous()
         data.edge_attr = torch.tensor(molgraph.f_bonds, dtype=torch.float)
-        data.y = torch.tensor([self.labels[key]], dtype=torch.float)
         data.parity_atoms = torch.tensor(molgraph.parity_atoms, dtype=torch.long)
-        data.smiles = self.smiles[key]
+        data.smiles = molgraph.smiles
+        data.c_shifts = torch.tensor(self.c_shifts[key], dtype=torch.float)
+        data.c_mask = data.c_shifts != -1000
+        data.h_shifts = torch.tensor(self.h_shifts[key], dtype=torch.float)
+        data.h_mask = data.h_shifts != -1000
 
         return data
 
     def __len__(self):
-        return len(self.smiles)
+        return len(self.mol_blocks)
 
     def __getitem__(self, key):
         return self.process_key(key)
@@ -328,14 +332,18 @@ def construct_loader(args, modes=('train', 'val')):
     if isinstance(modes, str):
         modes = [modes]
 
-    data_df = pd.read_csv(args.data_path)
+    with gzip.open(args.data_path, 'rb') as f:
+        data_df = pickle.load(f)
 
-    smiles = data_df.iloc[:, 0].values
-    labels = data_df.iloc[:, 1].values.astype(np.float32)
+    data_df = data_df.dropna(subset=['spectrum_C']) if args.shift == 'C' else data_df.dropna(subset=['spectrum_H'])
+
+    mol_blocks = data_df.iloc[:, 6].values
+    c_shifts = data_df.iloc[:, 1].values
+    h_shifts = data_df.iloc[:, 2].values
 
     loaders = []
     for mode in modes:
-        dataset = MolDataset(smiles, labels, args, mode)
+        dataset = MolDataset(mol_blocks, c_shifts, h_shifts, args, mode)
         loader = DataLoader(dataset=dataset,
                             batch_size=args.batch_size,
                             shuffle=not args.no_shuffle if mode == 'train' else False,

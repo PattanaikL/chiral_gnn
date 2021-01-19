@@ -7,78 +7,86 @@ import numpy as np
 import torch
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import _LRScheduler
-from sklearn.metrics import roc_auc_score
 
 
-def train(model, loader, optimizer, loss, stdzer, device, scheduler, task):
+def train(model, loader, optimizer, loss, stdzer, scheduler, args):
     model.train()
-    loss_all, correct = 0, 0
+    loss_all, correct, n_shifts = 0, 0, 0
 
     for data in tqdm(loader, total=len(loader)):
-        data = data.to(device)
+        data = data.to(args.device)
         optimizer.zero_grad()
 
         out = model(data)
-        result = loss(out, stdzer(data.y))
+
+        if args.shift == 'C':
+            y = data.c_shifts
+            mask = data.c_mask
+        elif args.shift == 'H':
+            y = data.h_shifts
+            mask = data.h_mask
+
+        result = loss(out * mask, stdzer(y * mask))
+        n_shifts += mask.sum().item()
+
         result.backward()
-
         optimizer.step()
-        scheduler.step()
-        loss_all += loss(stdzer(out, rev=True), data.y)
+        # scheduler.step()
+        loss_all += loss(stdzer(out, rev=True) * mask, y * mask)
 
-        if task == 'classification':
-            predicted = torch.round(out.data)
-            correct += (predicted == data.y).sum().double()
-
-    if task == 'regression':
-        return math.sqrt(loss_all / len(loader.dataset)), None  # rmse
-    elif task == 'classification':
-        return loss_all / len(loader.dataset), correct / len(loader.dataset)
+    return math.sqrt(loss_all / n_shifts)  # rmse
 
 
-def eval(model, loader, loss, stdzer, device, task):
+def eval(model, loader, loss, stdzer, args):
     model.eval()
-    error, correct = 0, 0
+    error, correct, n_shifts = 0, 0, 0
 
     with torch.no_grad():
         for data in tqdm(loader, total=len(loader)):
-            data = data.to(device)
+            data = data.to(args.device)
             out = model(data)
-            error += loss(stdzer(out, rev=True), data.y).item()
 
-            if task == 'classification':
-                predicted = torch.round(out.data)
-                correct += (predicted == data.y).sum().double()
+            if args.shift == 'C':
+                y = data.c_shifts
+                mask = data.c_mask
+            elif args.shift == 'H':
+                y = data.h_shifts
+                mask = data.h_mask
 
-    if task == 'regression':
-        return math.sqrt(error / len(loader.dataset)), None  # rmse
-    elif task == 'classification':
-        return error / len(loader.dataset), correct / len(loader.dataset)
+            error += loss(stdzer(out, rev=True) * mask, y * mask)
+            n_shifts += mask.sum().item()
+
+    return math.sqrt(error / n_shifts)  # rmse
 
 
-def test(model, loader, loss, stdzer, device, task):
+def test(model, loader, loss, stdzer, args):
     model.eval()
-    error, correct = 0, 0
+    error, correct, n_shifts = 0, 0, 0
 
-    preds, ys = [], []
+    preds = []
     with torch.no_grad():
         for data in tqdm(loader, total=len(loader)):
-            data = data.to(device)
+            data = data.to(args.device)
             out = model(data)
-            pred = stdzer(out, rev=True)
-            error += loss(pred, data.y).item()
-            preds.extend(pred.cpu().detach().tolist())
 
-            if task == 'classification':
-                predicted = torch.round(out.data)
-                correct += (predicted == data.y).sum().double()
-                ys.extend(data.y.cpu().detach().tolist())
+            if args.shift == 'C':
+                y = data.c_shifts
+                mask = data.c_mask
+            elif args.shift == 'H':
+                y = data.h_shifts
+                mask = data.h_mask
 
-    if task == 'regression':
-        return preds, math.sqrt(error / len(loader.dataset)), None, None  # rmse
-    elif task == 'classification':
-        auc = roc_auc_score(ys, preds)
-        return preds, error / len(loader.dataset), correct / len(loader.dataset), auc
+            pred = stdzer(out, rev=True) * mask
+            error += loss(pred * mask, y * mask)
+
+            data_map = {k: [] for k in np.arange(data.batch.bincount().size(0))}
+            for p, b in zip(pred, data.batch):
+                data_map[b.item()].append(p.item())
+
+            preds.extend(data_map.values())
+            n_shifts += mask.sum().item()
+
+    return preds, math.sqrt(error / n_shifts)  # rmse
 
 
 class NoamLR(_LRScheduler):

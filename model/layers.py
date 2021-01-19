@@ -12,7 +12,7 @@ class GCNConv(MessagePassing):
     def __init__(self, args):
         super(GCNConv, self).__init__(aggr='add')
         self.linear = nn.Linear(args.hidden_size, args.hidden_size)
-        self.batch_norm = nn.BatchNorm1d(args.hidden_size)
+        self.batch_norm = torch.nn.LayerNorm(args.hidden_size)
         self.tetra = args.tetra
         if self.tetra:
             self.tetra_update = get_tetra_update(args)
@@ -71,10 +71,10 @@ class GINEConv(MessagePassing):
         super(GINEConv, self).__init__(aggr="add")
         self.eps = nn.Parameter(torch.Tensor([0]))
         self.mlp = nn.Sequential(nn.Linear(args.hidden_size, 2 * args.hidden_size),
-                                 nn.BatchNorm1d(2 * args.hidden_size),
+                                 nn.LayerNorm(2 * args.hidden_size),
                                  nn.ReLU(),
                                  nn.Linear(2 * args.hidden_size, args.hidden_size))
-        self.batch_norm = nn.BatchNorm1d(args.hidden_size)
+        self.batch_norm = nn.LayerNorm(args.hidden_size)
         self.tetra = args.tetra
         if self.tetra:
             self.tetra_update = get_tetra_update(args)
@@ -119,7 +119,7 @@ class DMPNNConv(MessagePassing):
         super(DMPNNConv, self).__init__(aggr='add')
         self.lin = nn.Linear(args.hidden_size, args.hidden_size)
         self.mlp = nn.Sequential(nn.Linear(args.hidden_size, args.hidden_size),
-                                 nn.BatchNorm1d(args.hidden_size),
+                                 nn.LayerNorm(args.hidden_size),
                                  nn.ReLU())
         self.tetra = args.tetra
         if self.tetra:
