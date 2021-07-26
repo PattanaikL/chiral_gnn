@@ -38,11 +38,10 @@ class TetraPermuter(nn.Module):
             gain += 0.5
 
     def forward(self, x):
-        nei_messages = torch.zeros([x.size(0), x.size(2)]).to(self.device)
 
-        for p in self.tetra_perms:
-            nei_messages_list = [self.drop(F.tanh(l(t))) for l, t in zip(self.W_bs, torch.split(x[:, p, :], 1, dim=1))]
-            nei_messages += self.drop(F.relu(torch.cat(nei_messages_list, dim=1).sum(dim=1)))
+        nei_messages_list = [self.drop(F.tanh(l(t))) for l, t in zip(self.W_bs, torch.split(x[:, self.tetra_perms, :], 1, dim=-2))]
+        nei_messages = torch.sum(self.drop(F.relu(torch.cat(nei_messages_list, dim=-2).sum(dim=-2))), dim=-2)
+
         return self.mlp_out(nei_messages / 3.)
 
 
@@ -76,10 +75,7 @@ class ConcatTetraPermuter(nn.Module):
 
     def forward(self, x):
 
-        nei_messages = torch.zeros([x.size(0), x.size(2)]).to(self.device)
-
-        for p in self.tetra_perms:
-            nei_messages += self.drop(F.relu(self.W_bs(x[:, p, :].view(x.size(0), self.hidden*4))))
+        nei_messages = self.drop(F.relu(self.W_bs(x[:, self.tetra_perms, :].flatten(start_dim=2))))
         return self.mlp_out(nei_messages / 3.)
 
 
