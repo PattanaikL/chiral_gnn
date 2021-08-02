@@ -16,6 +16,11 @@ The script will request the user to enter one of the supported CUDA versions lis
 The script uses this CUDA version to install PyTorch and PyTorch Geometric. Alternatively, the user could manually follow the steps to install PyTorch Geometric here: https://github.com/rusty1s/pytorch_geometric/blob/master/.travis.yml.
 
 ## Usage
+For the toy classification task, call the `train.py` script with the following parameters defined:
+
+`python train.py --data_path data/d4_docking/d4_docking_rs.csv --split_path data/d4_docking/rs/split0.npy --task classification --log_dir ./test_run`
+
+
 To train the model with the best-performing parameters, call the `train.py` script with the following parameters defined:
 
 `python train.py --data_path data/d4_docking/d4_docking.csv --split_path data/d4_docking/full/split0.npy --log_dir ./test_run --gnn_type dmpnn --message tetra_permute_concat --global_chiral_features --chiral_features`
