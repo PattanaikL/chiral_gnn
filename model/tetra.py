@@ -76,7 +76,7 @@ class ConcatTetraPermuter(nn.Module):
     def forward(self, x):
 
         nei_messages = self.drop(F.relu(self.W_bs(x[:, self.tetra_perms, :].flatten(start_dim=2))))
-        return self.mlp_out(nei_messages / 3.)
+        return self.mlp_out(nei_messages.sum(dim=-2) / 3.)
 
 
 class TetraDifferencesProduct(nn.Module):
