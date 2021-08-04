@@ -18,7 +18,7 @@ The script uses this CUDA version to install PyTorch and PyTorch Geometric. Alte
 ## Usage
 For the toy classification task, call the `train.py` script with the following parameters defined:
 
-`python train.py --data_path data/d4_docking/d4_docking_rs.csv --split_path data/d4_docking/rs/split0.npy --task classification --log_dir ./test_run`
+`python train.py --data_path data/d4_docking/d4_docking_rs.csv --split_path data/d4_docking/rs/split0.npy --task classification --log_dir ./test_run --gnn_type dmpnn --message tetra_permute_concat`
 
 
 To train the model with the best-performing parameters, call the `train.py` script with the following parameters defined:
