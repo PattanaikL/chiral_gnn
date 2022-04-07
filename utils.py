@@ -1,6 +1,8 @@
 import os
 import logging
 from argparse import Namespace
+
+import torch
 from torch import nn
 
 
@@ -15,7 +17,7 @@ class Standardizer:
 
     def __call__(self, x, rev=False):
         if rev:
-            return (x * self.std) + self.mean
+            return torch.Tensor((x.detach().numpy() * self.std) + self.mean)
         return (x - self.mean) / self.std
 
 

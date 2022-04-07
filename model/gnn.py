@@ -22,6 +22,7 @@ class GNN(nn.Module):
         self.ffn_hidden_size = args.ffn_hidden_size
         self.rdkit = args.rdkit_path
         self.n_rdkit = args.n_rdkit
+        self.n_out = args.n_out
 
         if self.gnn_type == 'dmpnn':
             self.edge_init = nn.Linear(num_node_features + num_edge_features, self.hidden_size)
@@ -76,7 +77,7 @@ class GNN(nn.Module):
 
         # ffn
         self.mult = 2 if self.graph_pool == "set2set" else 1
-        self.ffn_out = nn.Linear(self.ffn_hidden_size, 1) #Change here for multiple outputs
+        self.ffn_out = nn.Linear(self.ffn_hidden_size, self.n_out) #Change here for multiple outputs
 
     def forward(self, data):
         x, edge_index, edge_attr, batch, parity_atoms, rdkit = data.x, data.edge_index, data.edge_attr, data.batch, data.parity_atoms, data.rdkit
@@ -128,6 +129,6 @@ class GNN(nn.Module):
             h_ffn = F.relu(h_ffn)
 
         if self.task == 'regression':
-            return self.ffn_out(h_ffn).squeeze(-1)#Need to change squeeze
+            return self.ffn_out(h_ffn) #.squeeze(-1)#Need to change squeeze
         elif self.task == 'classification':
             return torch.sigmoid(self.ffn(self.pool(h, batch))).squeeze(-1)

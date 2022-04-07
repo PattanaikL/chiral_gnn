@@ -2934,3 +2934,201 @@ Epoch 4: Training Loss 0.4391082597284081
 Epoch 4: Validation Loss 0.4493929196336836
 Best Validation Loss 0.4493929196336836 on Epoch 4
 Test Loss 0.472645702140681
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_rdkit_feat.csv
+n_rdkit: 14
+n_out: 1
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_rdkit_feat.csv
+n_rdkit: 14
+n_out: 1
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 7.020930198054049
+Epoch 0: Validation Loss 7.300050544689292
+Epoch 1: Training Loss 7.023543954282224
+Epoch 1: Validation Loss 7.29787547171236
+Epoch 2: Training Loss 6.999528324039642
+Epoch 2: Validation Loss 7.2993578952065645
+Epoch 3: Training Loss 7.008264295288612
+Epoch 3: Validation Loss 7.300503155947634
+Epoch 4: Training Loss 7.006195051809784
+Epoch 4: Validation Loss 7.3004420042644185
+Best Validation Loss 7.29787547171236 on Epoch 1
+Test Loss 7.396103952527766
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_rdkit_feat.csv
+n_rdkit: 14
+n_out: 1
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 0.7594316233807147
+Epoch 0: Validation Loss 0.6795267345499364
+Epoch 1: Training Loss 0.6306789364541942
+Epoch 1: Validation Loss 0.6081149748305652
+Epoch 2: Training Loss 0.5610374669757
+Epoch 2: Validation Loss 0.5002251488782844

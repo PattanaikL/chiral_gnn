@@ -19,12 +19,13 @@ def train(model, loader, optimizer, loss, stdzer, device, scheduler, task):
         optimizer.zero_grad()
 
         out = model(data)
-        result = loss(out, stdzer(data.y))
+        mask = torch.isnan(data.y)
+        result = loss(out[~mask], stdzer(data.y)[~mask])
         result.backward()
 
         optimizer.step()
         scheduler.step()
-        loss_all += loss(stdzer(out, rev=True), data.y)
+        loss_all += loss(stdzer(out, rev=True)[~mask], data.y[~mask])
 
         if task == 'classification':
             predicted = torch.round(out.data)
@@ -44,7 +45,8 @@ def eval(model, loader, loss, stdzer, device, task):
         for data in tqdm(loader, total=len(loader)):
             data = data.to(device)
             out = model(data)
-            error += loss(stdzer(out, rev=True), data.y).item()
+            mask = torch.isnan(data.y)
+            error += loss(stdzer(out, rev=True)[~mask], data.y[~mask]).item()
 
             if task == 'classification':
                 predicted = torch.round(out.data)
@@ -65,8 +67,9 @@ def test(model, loader, loss, stdzer, device, task):
         for data in tqdm(loader, total=len(loader)):
             data = data.to(device)
             out = model(data)
-            pred = stdzer(out, rev=True)
-            error += loss(pred, data.y).item()
+            mask = torch.isnan(data.y)
+            pred = stdzer(out, rev=True)[~mask]
+            error += loss(pred, data.y[~mask]).item()
             preds.extend(pred.cpu().detach().tolist())
 
             if task == 'classification':

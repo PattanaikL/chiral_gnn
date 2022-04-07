@@ -65,6 +65,8 @@ def add_train_args(parser: ArgumentParser):
                         help='Path to csv file containing rdkit features')
     parser.add_argument('--n_rdkit', type=int,
                         help='Number of rdkit features per smiles')
+    parser.add_argument('--n_out', type=int, default=1,
+                        help='Number of ouputs in a multi-target problem')
 #Add argument for number of outputs
 
 def modify_train_args(args: Namespace):

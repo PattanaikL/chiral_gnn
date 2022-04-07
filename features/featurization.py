@@ -294,8 +294,8 @@ class MolDataset(Dataset):
         self.args = args
 
         if mode == 'train':
-            self.mean = np.mean(self.labels)
-            self.std = np.std(self.labels)
+            self.mean = np.nanmean(self.labels, axis=0)
+            self.std = np.nanstd(self.labels, axis=0)
 
     def process_key(self, key):
         smi = self.smiles[key]
@@ -347,7 +347,7 @@ def construct_loader(args, modes=('train', 'val')):
     data_df = pd.read_csv(args.data_path)
 
     smiles = data_df.iloc[:, 0].values
-    labels = data_df.iloc[:, 1].values.astype(np.float32) #Change here to load multiple rows
+    labels = data_df.iloc[:, 1:].values.astype(np.float32) #Change here to load multiple rows
 
     if args.rdkit_path:
         data_rdkit = pd.read_csv(args.rdkit_path)
