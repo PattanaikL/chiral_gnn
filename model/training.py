@@ -10,7 +10,7 @@ from torch.optim.lr_scheduler import _LRScheduler
 from sklearn.metrics import roc_auc_score
 
 
-def train(model, loader, optimizer, loss, stdzer, device, scheduler, task):
+def train(model, loader, optimizer, loss, stdzer, device, scheduler, task, scaled_err):
     model.train()
     loss_all, correct = 0, 0
 
@@ -25,7 +25,10 @@ def train(model, loader, optimizer, loss, stdzer, device, scheduler, task):
 
         optimizer.step()
         scheduler.step()
-        loss_all += loss(stdzer(out, rev=True)[~mask], data.y[~mask])
+        if scaled_err == False:
+            loss_all += loss(stdzer(out, rev=True)[~mask], data.y[~mask])
+        else:
+            loss_all += result
 
         if task == 'classification':
             predicted = torch.round(out.data)
@@ -37,7 +40,7 @@ def train(model, loader, optimizer, loss, stdzer, device, scheduler, task):
         return loss_all / len(loader.dataset), correct / len(loader.dataset)
 
 
-def eval(model, loader, loss, stdzer, device, task):
+def eval(model, loader, loss, stdzer, device, task, scaled_err):
     model.eval()
     error, correct = 0, 0
 
@@ -46,7 +49,10 @@ def eval(model, loader, loss, stdzer, device, task):
             data = data.to(device)
             out = model(data)
             mask = torch.isnan(data.y)
-            error += loss(stdzer(out, rev=True)[~mask], data.y[~mask]).item()
+            if scaled_err == False:
+                error += loss(stdzer(out, rev=True)[~mask], data.y[~mask]).item()
+            else:
+                error += loss(out[~mask], stdzer(data.y)[~mask]).item()
 
             if task == 'classification':
                 predicted = torch.round(out.data)
@@ -68,9 +74,10 @@ def test(model, loader, loss, stdzer, device, task):
             data = data.to(device)
             out = model(data)
             mask = torch.isnan(data.y)
+            pred_out = stdzer(out, rev=True)
             pred = stdzer(out, rev=True)[~mask]
             error += loss(pred, data.y[~mask]).item()
-            preds.extend(pred.cpu().detach().tolist())
+            preds.extend(pred_out.cpu().detach().tolist())
 
             if task == 'classification':
                 predicted = torch.round(out.data)

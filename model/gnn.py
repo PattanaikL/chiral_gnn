@@ -20,8 +20,8 @@ class GNN(nn.Module):
         self.task = args.task
         self.ffn_depth = args.ffn_depth
         self.ffn_hidden_size = args.ffn_hidden_size
-        self.rdkit = args.rdkit_path
-        self.n_rdkit = args.n_rdkit
+        self.add_feature = args.add_feature_path
+        self.n_add_feature = args.n_add_feature
         self.n_out = args.n_out
 
         if self.gnn_type == 'dmpnn':
@@ -45,8 +45,8 @@ class GNN(nn.Module):
                 self.convs.append(GATConv(args.hidden_size, args.hidden_size))
             else:
                 ValueError('Undefined GNN type called {}'.format(self.gnn_type))
-        if self.rdkit:
-            self.ffn_1 = nn.Linear(self.hidden_size + self.n_rdkit, self.ffn_hidden_size)
+        if self.add_feature:
+            self.ffn_1 = nn.Linear(self.hidden_size + self.n_add_feature, self.ffn_hidden_size)
         else:
             self.ffn_1 = nn.Linear(self.hidden_size, self.ffn_hidden_size)
 
@@ -80,7 +80,7 @@ class GNN(nn.Module):
         self.ffn_out = nn.Linear(self.ffn_hidden_size, self.n_out) #Change here for multiple outputs
 
     def forward(self, data):
-        x, edge_index, edge_attr, batch, parity_atoms, rdkit = data.x, data.edge_index, data.edge_attr, data.batch, data.parity_atoms, data.rdkit
+        x, edge_index, edge_attr, batch, parity_atoms, add_feature = data.x, data.edge_index, data.edge_attr, data.batch, data.parity_atoms, data.add_feature
 
         if self.gnn_type == 'dmpnn':
             row, col = edge_index
@@ -120,8 +120,8 @@ class GNN(nn.Module):
 
         h_ffn = self.pool(h, batch)
 
-        if self.rdkit:
-            h_ffn = torch.cat((h_ffn, rdkit), dim=1)
+        if self.add_feature:
+            h_ffn = torch.cat((h_ffn, add_feature), dim=1)
 
         h_ffn = F.relu(self.ffn_1(h_ffn))
         for l in range(self.ffn_depth):

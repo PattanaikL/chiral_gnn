@@ -47,7 +47,7 @@ def add_train_args(parser: ArgumentParser):
                         help='Dimensionality of hidden layers in MPN')
     parser.add_argument('--depth', type=int, default=3,
                         help='Number of message passing steps')
-    parser.add_argument('--dropout', type=float, default=0.2,
+    parser.add_argument('--dropout', type=float, default=0,
                         help='Dropout probability')
     parser.add_argument('--graph_pool', type=str, default='sum',
                         choices=['sum', 'mean', 'max', 'attn', 'set2set'],
@@ -61,12 +61,13 @@ def add_train_args(parser: ArgumentParser):
                         help='Use global chiral atom features')
     parser.add_argument('--ffn_depth', type=int, default=0, help='FFN layers less the linear output and input layer')
     parser.add_argument('--ffn_hidden_size', type=int, default=300, help='Dimensionality of hidden layers in FFN')
-    parser.add_argument('--rdkit_path', type=str,
+    parser.add_argument('--add_feature_path', type=str,
                         help='Path to csv file containing rdkit features')
-    parser.add_argument('--n_rdkit', type=int,
+    parser.add_argument('--n_add_feature', type=int,
                         help='Number of rdkit features per smiles')
     parser.add_argument('--n_out', type=int, default=1,
                         help='Number of ouputs in a multi-target problem')
+    parser.add_argument('--scaled_err', default=True)
 #Add argument for number of outputs
 
 def modify_train_args(args: Namespace):

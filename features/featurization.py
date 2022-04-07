@@ -275,7 +275,7 @@ class MolGraph:
 
 class MolDataset(Dataset):
 
-    def __init__(self, smiles, labels, rdkit, args, mode='train'):
+    def __init__(self, smiles, labels, add_feature, args, mode='train'):
         super(MolDataset, self).__init__()
 
         if args.split_path:
@@ -283,10 +283,10 @@ class MolDataset(Dataset):
             self.split = np.load(args.split_path, allow_pickle=True)[self.split_idx]
         else:
             self.split = list(range(len(smiles)))  # fix this
-        if args.rdkit_path:
-            self.rdkit = [rdkit[i] for i in self.split]
+        if args.add_feature_path:
+            self.add_feature = [add_feature[i] for i in self.split]
         else:
-            self.rdkit = args.rdkit_path
+            self.add_feature = args.add_feature_path
 
         self.smiles = [smiles[i] for i in self.split]
         self.labels = [labels[i] for i in self.split]
@@ -311,10 +311,10 @@ class MolDataset(Dataset):
         data.y = torch.tensor([self.labels[key]], dtype=torch.float)
         data.parity_atoms = torch.tensor(molgraph.parity_atoms, dtype=torch.long)
         data.smiles = self.smiles[key]
-        if self.rdkit:
-            data.rdkit = torch.tensor([self.rdkit[key]])
+        if self.add_feature:
+            data.add_feature = torch.tensor([self.add_feature[key]])
         else:
-            data.rdkit = torch.tensor([], dtype=torch.float)
+            data.add_feature = torch.tensor([], dtype=torch.float)
         return data
 
     def __len__(self):
@@ -349,15 +349,15 @@ def construct_loader(args, modes=('train', 'val')):
     smiles = data_df.iloc[:, 0].values
     labels = data_df.iloc[:, 1:].values.astype(np.float32) #Change here to load multiple rows
 
-    if args.rdkit_path:
-        data_rdkit = pd.read_csv(args.rdkit_path)
-        rdkit = data_rdkit.iloc[:].values.astype(np.float32)
+    if args.add_feature_path:
+        data_add_feature = pd.read_csv(args.add_feature_path)
+        add_feature = data_add_feature.iloc[:].values.astype(np.float32)
     else:
-        rdkit = np.array([])
+        add_feature = np.array([])
 
     loaders = []
     for mode in modes:
-        dataset = MolDataset(smiles, labels, rdkit, args, mode)
+        dataset = MolDataset(smiles, labels, add_feature, args, mode)
         loader = DataLoader(dataset=dataset,
                             batch_size=args.batch_size,
                             shuffle=not args.no_shuffle if mode == 'train' else False,

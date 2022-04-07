@@ -41,13 +41,13 @@ logger.info('')
 # train
 logger.info("Starting training...")
 for epoch in range(0, args.n_epochs):
-    train_loss, train_acc = train(model, train_loader, optimizer, loss, stdzer, args.device, scheduler, args.task)
+    train_loss, train_acc = train(model, train_loader, optimizer, loss, stdzer, args.device, scheduler, args.task, args.scaled_err)
     logger.info(f"Epoch {epoch}: Training Loss {train_loss}")
 
     if args.task == 'classification':
         logger.info(f"Epoch {epoch}: Training Classification Accuracy {train_acc}")
 
-    val_loss, val_acc = eval(model, val_loader, loss, stdzer, args.device, args.task)
+    val_loss, val_acc = eval(model, val_loader, loss, stdzer, args.device, args.task, args.scaled_err)
     logger.info(f"Epoch {epoch}: Validation Loss {val_loss}")
 
     if args.task == 'classification':
