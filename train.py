@@ -17,10 +17,11 @@ logger = create_logger('train', args.log_dir)
 train_loader, val_loader = construct_loader(args)
 mean = train_loader.dataset.mean
 std = train_loader.dataset.std
-stdzer = Standardizer(mean, std, args.task)
+stdzer = Standardizer(mean, std, args.task) #Make sure loss and standardizer can hadle multiclass
 
 # create model, optimizer, scheduler, and loss fn
 model = GNN(args, train_loader.dataset.num_node_features, train_loader.dataset.num_edge_features).to(args.device)
+print(model)
 optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
 scheduler = build_lr_scheduler(optimizer, args, len(train_loader.dataset))
 loss = get_loss_func(args)

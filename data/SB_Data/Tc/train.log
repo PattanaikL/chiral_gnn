@@ -1,0 +1,2936 @@
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 80
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [80]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [7280]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99967565]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 1.459403880321629
+Epoch 0: Validation Loss 0.8911209389111738
+Epoch 1: Training Loss 1.0381567312738813
+Epoch 1: Validation Loss 0.8628371393442904
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 80
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [80]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [7280]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99967565]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 1.459403880321629
+Epoch 0: Validation Loss 0.8911209389111738
+Epoch 1: Training Loss 1.0381567312738813
+Epoch 1: Validation Loss 0.8628371393442904
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 80
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [80]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [7280]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99967565]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 1.459403880321629
+Epoch 0: Validation Loss 0.8911209389111738
+Epoch 1: Training Loss 1.0381567312738813
+Epoch 1: Validation Loss 0.8628371393442904
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 80
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [80]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [7280]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99967565]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 1.459403880321629
+Epoch 0: Validation Loss 0.8911209389111738
+Epoch 1: Training Loss 1.0381567312738813
+Epoch 1: Validation Loss 0.8628371393442904
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 80
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gcn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [80]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [7280]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99967565]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 4.180186931683017
+Epoch 0: Validation Loss 1.6783458633146904
+Epoch 1: Training Loss 2.8994310018135185
+Epoch 1: Validation Loss 1.4420108243568586
+Epoch 2: Training Loss 2.227137441188981
+Epoch 2: Validation Loss 1.2931292964980967
+Epoch 3: Training Loss 2.0497715380761057
+Epoch 3: Validation Loss 1.0357086919696308
+Epoch 4: Training Loss 1.8004475116743368
+Epoch 4: Validation Loss 1.2264793611642686
+Epoch 5: Training Loss 1.6270036082775805
+Epoch 5: Validation Loss 0.8276477618797096
+Epoch 6: Training Loss 1.5516561735367258
+Epoch 6: Validation Loss 1.0302284963338935
+Epoch 7: Training Loss 1.4639718270900248
+Epoch 7: Validation Loss 1.1546100939021946
+Epoch 8: Training Loss 1.4616695752580702
+Epoch 8: Validation Loss 0.7247222607353933
+Epoch 9: Training Loss 1.3935279549572206
+Epoch 9: Validation Loss 0.6637870964163257
+Epoch 10: Training Loss 1.4193763996958917
+Epoch 10: Validation Loss 0.6565254450407372
+Epoch 11: Training Loss 1.337863359382297
+Epoch 11: Validation Loss 0.7522628408204265
+Epoch 12: Training Loss 1.3116320964825205
+Epoch 12: Validation Loss 1.130388389385357
+Epoch 13: Training Loss 1.2856339607427203
+Epoch 13: Validation Loss 0.7021815156840754
+Epoch 14: Training Loss 1.3656128889371744
+Epoch 14: Validation Loss 0.7343546437021794
+Epoch 15: Training Loss 1.2880448919759833
+Epoch 15: Validation Loss 0.9284214728759073
+Epoch 16: Training Loss 1.2442739466163433
+Epoch 16: Validation Loss 0.649546444294938
+Epoch 17: Training Loss 1.177215208695083
+Epoch 17: Validation Loss 0.5493353445076636
+Epoch 18: Training Loss 1.2427150637670086
+Epoch 18: Validation Loss 0.5941601209396506
+Epoch 19: Training Loss 1.2458065742417195
+Epoch 19: Validation Loss 0.6672865473329065
+Epoch 20: Training Loss 1.1364603174870016
+Epoch 20: Validation Loss 0.5666603121257087
+Epoch 21: Training Loss 1.1646716169129454
+Epoch 21: Validation Loss 0.5132718332023469
+Epoch 22: Training Loss 1.1699978862645546
+Epoch 22: Validation Loss 0.5133082241422765
+Epoch 23: Training Loss 1.1146282947539075
+Epoch 23: Validation Loss 0.4686968528680561
+Epoch 24: Training Loss 1.1228586586505527
+Epoch 24: Validation Loss 0.5420091720987879
+Epoch 25: Training Loss 1.1330289962674174
+Epoch 25: Validation Loss 0.5818248626690092
+Epoch 26: Training Loss 1.1110474780193176
+Epoch 26: Validation Loss 0.6659410180067897
+Epoch 27: Training Loss 1.0856904771173372
+Epoch 27: Validation Loss 0.5260864609946013
+Epoch 28: Training Loss 1.0919168641788615
+Epoch 28: Validation Loss 0.5505371380726743
+Epoch 29: Training Loss 1.0959293451541514
+Epoch 29: Validation Loss 0.5535152726623808
+Epoch 30: Training Loss 1.1153232519006153
+Epoch 30: Validation Loss 0.5249231426216585
+Epoch 31: Training Loss 1.0733970134712751
+Epoch 31: Validation Loss 0.5517081775549054
+Epoch 32: Training Loss 1.0761874936834515
+Epoch 32: Validation Loss 0.6083378482763709
+Epoch 33: Training Loss 1.0805363433282726
+Epoch 33: Validation Loss 0.6264712080079956
+Epoch 34: Training Loss 1.0723380531627726
+Epoch 34: Validation Loss 0.5706352447482099
+Epoch 35: Training Loss 1.0759645459634006
+Epoch 35: Validation Loss 0.44035257761401586
+Epoch 36: Training Loss 1.0451151161123418
+Epoch 36: Validation Loss 0.798054809099051
+Epoch 37: Training Loss 1.049684711076689
+Epoch 37: Validation Loss 0.5770389541123351
+Epoch 38: Training Loss 1.0486567124534751
+Epoch 38: Validation Loss 0.48928491876597957
+Epoch 39: Training Loss 1.0586125558681856
+Epoch 39: Validation Loss 0.5563933871091665
+Epoch 40: Training Loss 1.0361130233442464
+Epoch 40: Validation Loss 0.584643375225829
+Epoch 41: Training Loss 1.0056702074851103
+Epoch 41: Validation Loss 0.48386262650453155
+Epoch 42: Training Loss 1.019743740110269
+Epoch 42: Validation Loss 0.45948419214030484
+Epoch 43: Training Loss 1.0054253391714425
+Epoch 43: Validation Loss 0.5744606095485021
+Epoch 44: Training Loss 0.9977545263387981
+Epoch 44: Validation Loss 0.49091794410653206
+Epoch 45: Training Loss 1.0156367374622237
+Epoch 45: Validation Loss 0.4622551803011202
+Epoch 46: Training Loss 1.0016954473612332
+Epoch 46: Validation Loss 0.4977312367594883
+Epoch 47: Training Loss 0.9745230779875531
+Epoch 47: Validation Loss 0.46075336594821764
+Epoch 48: Training Loss 0.9900635942590683
+Epoch 48: Validation Loss 0.43834994136747457
+Epoch 49: Training Loss 0.9963795270681759
+Epoch 49: Validation Loss 0.5328957864031814
+Epoch 50: Training Loss 0.9701128264318217
+Epoch 50: Validation Loss 0.414531606033654
+Epoch 51: Training Loss 0.9928235695965961
+Epoch 51: Validation Loss 0.43305698214509586
+Epoch 52: Training Loss 0.9900112163987214
+Epoch 52: Validation Loss 0.4340345074453496
+Epoch 53: Training Loss 0.9594223669331142
+Epoch 53: Validation Loss 0.43924344832756673
+Epoch 54: Training Loss 0.965953543858988
+Epoch 54: Validation Loss 0.44067986041171275
+Epoch 55: Training Loss 0.9752113761167126
+Epoch 55: Validation Loss 0.4935313056284086
+Epoch 56: Training Loss 0.9715490512156343
+Epoch 56: Validation Loss 0.5663192375679914
+Epoch 57: Training Loss 0.9827432884020122
+Epoch 57: Validation Loss 0.46091631790627985
+Epoch 58: Training Loss 0.9637166903883311
+Epoch 58: Validation Loss 0.42562000655060256
+Epoch 59: Training Loss 0.9405389169736085
+Epoch 59: Validation Loss 0.48647617210011646
+Epoch 60: Training Loss 0.9641259801605675
+Epoch 60: Validation Loss 0.507741448221231
+Epoch 61: Training Loss 0.9608969330947434
+Epoch 61: Validation Loss 0.4528115377186831
+Epoch 62: Training Loss 0.9453579600098664
+Epoch 62: Validation Loss 0.5038769642161465
+Epoch 63: Training Loss 0.9611959342484799
+Epoch 63: Validation Loss 0.5456934994954639
+Epoch 64: Training Loss 0.9472214521353367
+Epoch 64: Validation Loss 0.5722246571973569
+Epoch 65: Training Loss 0.9500141970928854
+Epoch 65: Validation Loss 0.5625282728409196
+Epoch 66: Training Loss 0.959213602363232
+Epoch 66: Validation Loss 0.5610336213745081
+Epoch 67: Training Loss 0.9500254276285814
+Epoch 67: Validation Loss 0.4517167907886151
+Epoch 68: Training Loss 0.9206287235824375
+Epoch 68: Validation Loss 0.4562023318897247
+Epoch 69: Training Loss 0.9026543549182156
+Epoch 69: Validation Loss 0.448997027808454
+Epoch 70: Training Loss 0.9422053510958083
+Epoch 70: Validation Loss 0.4523437458110285
+Epoch 71: Training Loss 0.9104542060346381
+Epoch 71: Validation Loss 0.41792947148460025
+Epoch 72: Training Loss 0.9263193039700524
+Epoch 72: Validation Loss 0.4256223636514703
+Epoch 73: Training Loss 0.946437922403251
+Epoch 73: Validation Loss 0.5384458877173172
+Epoch 74: Training Loss 0.933306278676783
+Epoch 74: Validation Loss 0.4060721387662463
+Epoch 75: Training Loss 0.9258081295441026
+Epoch 75: Validation Loss 0.5098571269387853
+Epoch 76: Training Loss 0.950906485441346
+Epoch 76: Validation Loss 0.4924108040860835
+Epoch 77: Training Loss 0.9450828966990121
+Epoch 77: Validation Loss 0.44490054636018017
+Epoch 78: Training Loss 0.9283531293921364
+Epoch 78: Validation Loss 0.4373646574990512
+Epoch 79: Training Loss 0.9203281032100935
+Epoch 79: Validation Loss 0.42693016503725756
+Best Validation Loss 0.4060721387662463 on Epoch 74
+Test Loss 0.4574708456604378
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gin
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 4.935402146856554
+Epoch 0: Validation Loss 7.314225388544077
+Epoch 1: Training Loss 3.91541356812072
+Epoch 1: Validation Loss 1.8179443892404492
+Epoch 2: Training Loss 2.1960773696749922
+Epoch 2: Validation Loss 1.1087286743175093
+Epoch 3: Training Loss 1.699824784168945
+Epoch 3: Validation Loss 1.0121017046943837
+Epoch 4: Training Loss 1.5278816544254368
+Epoch 4: Validation Loss 0.6458206500434259
+Best Validation Loss 0.6458206500434259 on Epoch 4
+Test Loss 0.7498128059524983
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 1.459403880321629
+Epoch 0: Validation Loss 0.8911209389111738
+Epoch 1: Training Loss 1.0381635635075652
+Epoch 1: Validation Loss 0.8631779405290687
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 1.459403880321629
+Epoch 0: Validation Loss 0.8911209389111738
+Epoch 1: Training Loss 1.0381635635075652
+Epoch 1: Validation Loss 0.8631779405290687
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 1.459403880321629
+Epoch 0: Validation Loss 0.8911209389111738
+Epoch 1: Training Loss 1.0381635635075652
+Epoch 1: Validation Loss 0.8631779405290687
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 1.459403880321629
+Epoch 0: Validation Loss 0.8911209389111738
+Epoch 1: Training Loss 1.0381635635075652
+Epoch 1: Validation Loss 0.8631779405290687
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 1.459403880321629
+Epoch 0: Validation Loss 0.8911209389111738
+Epoch 1: Training Loss 1.0381635635075652
+Epoch 1: Validation Loss 0.8631779405290687
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 1.459403880321629
+Epoch 0: Validation Loss 0.8911209389111738
+Epoch 1: Training Loss 1.0381635635075652
+Epoch 1: Validation Loss 0.8631779405290687
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 1.459403880321629
+Epoch 0: Validation Loss 0.8911209389111738
+Epoch 1: Training Loss 1.0381635635075652
+Epoch 1: Validation Loss 0.8631779405290687
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 1.459403880321629
+Epoch 0: Validation Loss 0.8911209389111738
+Epoch 1: Training Loss 1.0381635635075652
+Epoch 1: Validation Loss 0.8631779405290687
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 1.459403880321629
+Epoch 0: Validation Loss 0.8911209389111738
+Epoch 1: Training Loss 1.0381635635075652
+Epoch 1: Validation Loss 0.8631779405290687
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 1.457483625369079
+Epoch 0: Validation Loss 0.8861381427363251
+Epoch 1: Training Loss 1.05543661005088
+Epoch 1: Validation Loss 0.7501717483235887
+Epoch 2: Training Loss 0.8511855664843646
+Epoch 2: Validation Loss 0.6961716847189781
+Epoch 3: Training Loss 0.7072445036754446
+Epoch 3: Validation Loss 0.5130493305422021
+Epoch 4: Training Loss 0.6470889580755018
+Epoch 4: Validation Loss 0.48898624179173933
+Best Validation Loss 0.48898624179173933 on Epoch 4
+Test Loss 0.562092261833186
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: dmpnn
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 1.457483625369079
+Epoch 0: Validation Loss 0.8861381427363251
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 2.2611315134530257
+Epoch 0: Validation Loss 0.8224230477007256
+Epoch 1: Training Loss 1.0537906931195566
+Epoch 1: Validation Loss 1.3522047311477414
+Epoch 2: Training Loss 0.9713110756541782
+Epoch 2: Validation Loss 0.664745168403664
+Epoch 3: Training Loss 0.8527882354963526
+Epoch 3: Validation Loss 0.6164092917343548
+Epoch 4: Training Loss 0.8407047914549284
+Epoch 4: Validation Loss 0.6095832015420132
+Best Validation Loss 0.6095832015420132 on Epoch 4
+Test Loss 0.643148410985345
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 0
+ffn_hidden_size: 300
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 0.885545231330063
+Epoch 0: Validation Loss 0.742721701334109
+Epoch 1: Training Loss 0.824952436289816
+Epoch 1: Validation Loss 0.6642946883785231
+Epoch 2: Training Loss 0.6209112415031489
+Epoch 2: Validation Loss 0.5506185509934757
+Epoch 3: Training Loss 0.5754432597174026
+Epoch 3: Validation Loss 0.5596516179597859
+Epoch 4: Training Loss 0.5511875412604977
+Epoch 4: Validation Loss 0.5110668653085568
+Best Validation Loss 0.5110668653085568 on Epoch 4
+Test Loss 0.5625797629715986
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 0.7309503446692328
+Epoch 0: Validation Loss 0.6658090202658735
+Epoch 1: Training Loss 0.6312343085576563
+Epoch 1: Validation Loss 0.6076507602906155
+Epoch 2: Training Loss 0.5462349552203946
+Epoch 2: Validation Loss 0.494035509504493
+Epoch 3: Training Loss 0.4670831448925817
+Epoch 3: Validation Loss 0.4573339841614626
+Epoch 4: Training Loss 0.43448149384221596
+Epoch 4: Validation Loss 0.42282665601018127
+Best Validation Loss 0.42282665601018127 on Epoch 4
+Test Loss 0.4519270598551623
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 0.7309503446692328
+Epoch 0: Validation Loss 0.6658090202658735
+Epoch 1: Training Loss 0.6312343085576563
+Epoch 1: Validation Loss 0.6076507602906155
+Epoch 2: Training Loss 0.5462349552203946
+Epoch 2: Validation Loss 0.494035509504493
+Epoch 3: Training Loss 0.4670831448925817
+Epoch 3: Validation Loss 0.4573339841614626
+Epoch 4: Training Loss 0.43448149384221596
+Epoch 4: Validation Loss 0.42282665601018127
+Best Validation Loss 0.42282665601018127 on Epoch 4
+Test Loss 0.4519270598551623
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 0.7309503446692328
+Epoch 0: Validation Loss 0.6658090202658735
+Epoch 1: Training Loss 0.6312343085576563
+Epoch 1: Validation Loss 0.6076507602906155
+Epoch 2: Training Loss 0.5462349552203946
+Epoch 2: Validation Loss 0.494035509504493
+Epoch 3: Training Loss 0.4670831448925817
+Epoch 3: Validation Loss 0.4573339841614626
+Epoch 4: Training Loss 0.43448149384221596
+Epoch 4: Validation Loss 0.42282665601018127
+Best Validation Loss 0.42282665601018127 on Epoch 4
+Test Loss 0.4519270598551623
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: None
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 0.7309503446692328
+Epoch 0: Validation Loss 0.6658090202658735
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: None
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: None
+n_rdkit: None
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: None
+n_rdkit: None
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: None
+n_rdkit: None
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: None
+n_rdkit: None
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 0.7309503446692328
+Epoch 0: Validation Loss 0.6658090202658735
+Epoch 1: Training Loss 0.6312343085576563
+Epoch 1: Validation Loss 0.6076507602906155
+Epoch 2: Training Loss 0.5462349552203946
+Epoch 2: Validation Loss 0.494035509504493
+Epoch 3: Training Loss 0.4670831448925817
+Epoch 3: Validation Loss 0.4573339841614626
+Epoch 4: Training Loss 0.43448149384221596
+Epoch 4: Validation Loss 0.42282665601018127
+Best Validation Loss 0.42282665601018127 on Epoch 4
+Test Loss 0.4519270598551623
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_rdkit_feat.csv
+n_rdkit: 14
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_rdkit_feat.csv
+n_rdkit: 14
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_rdkit_feat.csv
+n_rdkit: 14
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_rdkit_feat.csv
+n_rdkit: 14
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_rdkit_feat.csv
+n_rdkit: 14
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_rdkit_feat.csv
+n_rdkit: 14
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_rdkit_feat.csv
+n_rdkit: 14
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_rdkit_feat.csv
+n_rdkit: 14
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_rdkit_feat.csv
+n_rdkit: 14
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_rdkit_feat.csv
+n_rdkit: 14
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_rdkit_feat.csv
+n_rdkit: 14
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Arguments are...
+data_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_scaled.csv
+split_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/Tc_split0.npy
+log_dir: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc
+task: regression
+seed: 0
+n_epochs: 5
+batch_size: 50
+warmup_epochs: 2.0
+lr: 0.0001
+num_workers: 20
+no_shuffle: False
+shuffle_pairs: False
+gnn_type: gat
+hidden_size: 300
+depth: 3
+dropout: 0.2
+graph_pool: sum
+message: sum
+chiral_features: False
+global_chiral_features: False
+ffn_depth: 3
+ffn_hidden_size: 600
+rdkit_path: /home/Sayandeep/git_repo/chiral_gnn/data/SB_Data/Tc/crit_all_Tc_fold0_rdkit_feat.csv
+n_rdkit: 14
+tetra: False
+device: cpu
+
+Optimizer parameters are:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.0001
+    lr: 1.0494505494505495e-05
+    weight_decay: 0
+)
+
+Scheduler state dict is:
+num_lrs: 1
+warmup_epochs: [2.]
+total_epochs: [5]
+steps_per_epoch: 91
+init_lr: [1.e-05]
+max_lr: [0.0001]
+final_lr: [1.e-05]
+current_step: 1
+lr: [1.0494505494505495e-05]
+warmup_steps: [182]
+total_steps: [455]
+linear_increment: [4.94505495e-07]
+exponential_gamma: [0.99160109]
+base_lrs: [0.0001]
+last_epoch: -1
+_step_count: 0
+verbose: False
+
+Starting training...
+Epoch 0: Training Loss 0.7594316233807147
+Epoch 0: Validation Loss 0.6795267345499364
+Epoch 1: Training Loss 0.6306789364541942
+Epoch 1: Validation Loss 0.6081149748305652
+Epoch 2: Training Loss 0.5610374669757
+Epoch 2: Validation Loss 0.5002251488782844
+Epoch 3: Training Loss 0.4749899856866957
+Epoch 3: Validation Loss 0.5098182859726649
+Epoch 4: Training Loss 0.4391082597284081
+Epoch 4: Validation Loss 0.4493929196336836
+Best Validation Loss 0.4493929196336836 on Epoch 4
+Test Loss 0.472645702140681

@@ -41,7 +41,7 @@ def add_train_args(parser: ArgumentParser):
 
     # Model arguments
     parser.add_argument('--gnn_type', type=str,
-                        choices=['gin', 'gcn', 'dmpnn'],
+                        choices=['gin', 'gcn', 'dmpnn', 'gat'],
                         help='Type of gnn to use')
     parser.add_argument('--hidden_size', type=int, default=300,
                         help='Dimensionality of hidden layers in MPN')
@@ -59,7 +59,13 @@ def add_train_args(parser: ArgumentParser):
                         help='Use local chiral atom features')
     parser.add_argument('--global_chiral_features', action='store_true', default=False,
                         help='Use global chiral atom features')
-
+    parser.add_argument('--ffn_depth', type=int, default=0, help='FFN layers less the linear output and input layer')
+    parser.add_argument('--ffn_hidden_size', type=int, default=300, help='Dimensionality of hidden layers in FFN')
+    parser.add_argument('--rdkit_path', type=str,
+                        help='Path to csv file containing rdkit features')
+    parser.add_argument('--n_rdkit', type=int,
+                        help='Number of rdkit features per smiles')
+#Add argument for number of outputs
 
 def modify_train_args(args: Namespace):
     """

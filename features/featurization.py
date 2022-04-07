@@ -196,6 +196,11 @@ class MolGraph:
         for _ in range(self.n_atoms):
             self.a2b.append([])
 
+        if mol.GetNumBonds() == 0:  # TODO: FIX THIS
+            self.edge_index.extend([(0, 0), (0, 0)])
+            self.f_bonds.append(bond_features(None, args))
+            self.f_bonds.append(bond_features(None, args))
+
         # Get bond features
         for a1 in range(self.n_atoms):
             for a2 in range(a1 + 1, self.n_atoms):
@@ -221,6 +226,9 @@ class MolGraph:
                 self.b2revb.append(b2)
                 self.b2revb.append(b1)
                 self.n_bonds += 2
+
+        if len(self.edge_index) == 0:
+            self.edge_index.extend([(0, 0)])
 
 
     def get_components(self) -> Tuple[torch.FloatTensor, torch.FloatTensor,
@@ -267,7 +275,7 @@ class MolGraph:
 
 class MolDataset(Dataset):
 
-    def __init__(self, smiles, labels, args, mode='train'):
+    def __init__(self, smiles, labels, rdkit, args, mode='train'):
         super(MolDataset, self).__init__()
 
         if args.split_path:
@@ -275,6 +283,11 @@ class MolDataset(Dataset):
             self.split = np.load(args.split_path, allow_pickle=True)[self.split_idx]
         else:
             self.split = list(range(len(smiles)))  # fix this
+        if args.rdkit_path:
+            self.rdkit = [rdkit[i] for i in self.split]
+        else:
+            self.rdkit = args.rdkit_path
+
         self.smiles = [smiles[i] for i in self.split]
         self.labels = [labels[i] for i in self.split]
         self.data_map = {k: v for k, v in zip(range(len(self.smiles)), self.split)}
@@ -298,7 +311,10 @@ class MolDataset(Dataset):
         data.y = torch.tensor([self.labels[key]], dtype=torch.float)
         data.parity_atoms = torch.tensor(molgraph.parity_atoms, dtype=torch.long)
         data.smiles = self.smiles[key]
-
+        if self.rdkit:
+            data.rdkit = torch.tensor([self.rdkit[key]])
+        else:
+            data.rdkit = torch.tensor([], dtype=torch.float)
         return data
 
     def __len__(self):
@@ -331,11 +347,17 @@ def construct_loader(args, modes=('train', 'val')):
     data_df = pd.read_csv(args.data_path)
 
     smiles = data_df.iloc[:, 0].values
-    labels = data_df.iloc[:, 1].values.astype(np.float32)
+    labels = data_df.iloc[:, 1].values.astype(np.float32) #Change here to load multiple rows
+
+    if args.rdkit_path:
+        data_rdkit = pd.read_csv(args.rdkit_path)
+        rdkit = data_rdkit.iloc[:].values.astype(np.float32)
+    else:
+        rdkit = np.array([])
 
     loaders = []
     for mode in modes:
-        dataset = MolDataset(smiles, labels, args, mode)
+        dataset = MolDataset(smiles, labels, rdkit, args, mode)
         loader = DataLoader(dataset=dataset,
                             batch_size=args.batch_size,
                             shuffle=not args.no_shuffle if mode == 'train' else False,
