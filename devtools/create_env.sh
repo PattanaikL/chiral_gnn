@@ -40,6 +40,11 @@ do
             CUDA_VERSION="cu102"
             break
             ;;
+        "11.1")
+      CUDA="cudatoolkit=11.1"
+            CUDA_VERSION="cu111"
+            break
+            ;;
         "cpu")
 			# "cpuonly" works for Linux and Windows
 			CUDA="cpuonly"
