@@ -21,7 +21,6 @@ def train(model, loader, optimizer, loss, stdzer, device, scheduler, task, scale
         out = model(data)
         mask = torch.isnan(data.y)
         result = loss(out[~mask], stdzer(data.y)[~mask])
-        optimizer.zero_grad()
         result.backward()
 
         optimizer.step()
