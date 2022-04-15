@@ -84,7 +84,6 @@ def modify_train_args(args: Namespace):
     # shuffle=False for custom sampler
     if args.shuffle_pairs:
         setattr(args, 'no_shuffle', True)
-
     setattr(args, 'device', torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
 
 

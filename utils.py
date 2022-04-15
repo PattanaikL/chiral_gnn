@@ -18,7 +18,7 @@ class Standardizer:
     def __call__(self, x, rev=False):
         if rev:
             return torch.Tensor((x.detach().numpy() * self.std) + self.mean)
-        return (x - self.mean) / self.std
+        return (x.cpu() - self.mean) / self.std
 
 
 def create_logger(name: str, log_dir: str = None) -> logging.Logger:

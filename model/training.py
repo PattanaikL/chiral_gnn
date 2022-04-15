@@ -20,13 +20,13 @@ def train(model, loader, optimizer, loss, stdzer, device, scheduler, task, scale
 
         out = model(data)
         mask = torch.isnan(data.y)
-        result = loss(out[~mask], stdzer(data.y)[~mask])
+        result = loss(out[~mask], stdzer(data.y).to(device)[~mask])
         result.backward()
 
         optimizer.step()
         scheduler.step()
         if scaled_err == False:
-            loss_all += loss(stdzer(out, rev=True)[~mask], data.y[~mask])
+            loss_all += loss(stdzer(out, rev=True).to(device)[~mask], data.y[~mask])
         else:
             loss_all += result
 
@@ -50,9 +50,9 @@ def eval(model, loader, loss, stdzer, device, task, scaled_err):
             out = model(data)
             mask = torch.isnan(data.y)
             if scaled_err == False:
-                error += loss(stdzer(out, rev=True)[~mask], data.y[~mask]).item()
+                error += loss(stdzer(out, rev=True).to(device)[~mask], data.y[~mask]).item()
             else:
-                error += loss(out[~mask], stdzer(data.y)[~mask]).item()
+                error += loss(out[~mask], stdzer(data.y).to(device)[~mask]).item()
 
             if task == 'classification':
                 predicted = torch.round(out.data)
@@ -74,8 +74,8 @@ def test(model, loader, loss, stdzer, device, task):
             data = data.to(device)
             out = model(data)
             mask = torch.isnan(data.y)
-            pred_out = stdzer(out, rev=True)
-            pred = stdzer(out, rev=True)[~mask]
+            pred_out = stdzer(out, rev=True).to(device)
+            pred = stdzer(out, rev=True).to(device)[~mask]
             error += loss(pred, data.y[~mask]).item()
             preds.extend(pred_out.cpu().detach().tolist())
 
