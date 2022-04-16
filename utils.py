@@ -17,7 +17,7 @@ class Standardizer:
 
     def __call__(self, x, rev=False):
         if rev:
-            return torch.Tensor((x.detach().numpy() * self.std) + self.mean)
+            return torch.Tensor((x.detach().cpu().numpy() * self.std) + self.mean)
         return (x.cpu() - self.mean) / self.std
 
 

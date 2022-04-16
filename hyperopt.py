@@ -20,11 +20,11 @@ def optimize(trial, args):
 
     setattr(args, 'hidden_size', int(trial.suggest_discrete_uniform('hidden_size', 300, 1200, 300)))
     setattr(args, 'depth', int(trial.suggest_discrete_uniform('depth', 2, 6, 1)))
-    setattr(args, 'dropout', int(trial.suggest_discrete_uniform('dropout', 0, 1, 0.2)))
+    #setattr(args, 'dropout', int(trial.suggest_discrete_uniform('dropout', 0, 1, 0.2)))
     setattr(args, 'lr', trial.suggest_loguniform('lr', 1e-5, 1e-3))
     setattr(args, 'batch_size', int(trial.suggest_categorical('batch_size', [25, 50, 100])))
-    setattr(args, 'graph_pool', trial.suggest_categorical('graph_pool', ['sum', 'mean', 'max', 'attn', 'set2set']))
-    setattr(args, 'ffn_hidden_size', int(trial.suggest_discrete_uniform('ffn_hidden_size', 300, 1200, 300)))
+    #setattr(args, 'graph_pool', trial.suggest_categorical('graph_pool', ['sum', 'mean', 'max', 'attn', 'set2set']))
+    setattr(args, 'ffn_hidden_size', int(trial.suggest_discrete_uniform('ffn_hidden_size', 300, 2000, 300)))
     setattr(args, 'ffn_depth', int(trial.suggest_discrete_uniform('ffn_depth', 2, 6, 1)))
 
     setattr(args, 'log_dir', os.path.join(args.hyperopt_dir, str(trial._trial_id)))
@@ -57,7 +57,7 @@ def optimize(trial, args):
                     best_epoch = epoch
 
             best_val_loss_lst.append(best_val_loss)
-            print(best_val_loss_lst)
+
     return sum(best_val_loss_lst)/len(best_val_loss_lst)
 
 
