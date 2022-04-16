@@ -17,10 +17,8 @@ def add_train_args(parser: ArgumentParser):
                         help='Directory where model checkpoints will be saved')
     parser.add_argument('--task', type=str, default='regression',
                         help='Regression or classification task')
-    parser.add_argument('--seed', type=int, default=0,
-                        help='Random seed to use when splitting data into train/val/test sets.'
-                             'When `num_folds` > 1, the first fold uses this seed and all'
-                             'subsequent folds add 1 to the seed.')
+    parser.add_argument('--pytorch_seed', type=int, default=0,
+                        help='Seed for PyTorch randomness (e.g., random initial weights).')
     # Training arguments
     parser.add_argument('--n_epochs', type=int, default=60,
                         help='Number of epochs to run')
@@ -68,6 +66,8 @@ def add_train_args(parser: ArgumentParser):
     parser.add_argument('--n_out', type=int, default=1,
                         help='Number of ouputs in a multi-target problem')
     parser.add_argument('--scaled_err', default=True)
+    parser.add_argument('--ensemble', type=int, default=1)
+    parser.add_argument('--n_fold', type=int, default=1)
 #Add argument for number of outputs
 
 def modify_train_args(args: Namespace):

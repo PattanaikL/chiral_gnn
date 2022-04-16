@@ -1,6 +1,6 @@
 from argparse import Namespace
 from typing import List, Tuple, Union
-
+import os
 from rdkit import Chem
 from rdkit.Chem.rdchem import ChiralType
 
@@ -275,12 +275,12 @@ class MolGraph:
 
 class MolDataset(Dataset):
 
-    def __init__(self, smiles, labels, add_feature, args, mode='train'):
+    def __init__(self, smiles, labels, add_feature, args,  n_fold, mode='train'):
         super(MolDataset, self).__init__()
 
         if args.split_path:
             self.split_idx = 0 if mode == 'train' else 1 if mode == 'val' else 2
-            self.split = np.load(args.split_path, allow_pickle=True)[self.split_idx]
+            self.split = np.load(args.split_path+f"{n_fold}.npy", allow_pickle=True)[self.split_idx]
         else:
             self.split = list(range(len(smiles)))  # fix this
         if args.add_feature_path:
@@ -339,7 +339,7 @@ class StereoSampler(Sampler):
         return len(self.data_source)
 
 
-def construct_loader(args, modes=('train', 'val')):
+def construct_loader(args, n_fold, modes=('train', 'val')):
 
     if isinstance(modes, str):
         modes = [modes]
@@ -357,7 +357,7 @@ def construct_loader(args, modes=('train', 'val')):
 
     loaders = []
     for mode in modes:
-        dataset = MolDataset(smiles, labels, add_feature, args, mode)
+        dataset = MolDataset(smiles, labels, add_feature, args, n_fold, mode)
         loader = DataLoader(dataset=dataset,
                             batch_size=args.batch_size,
                             shuffle=not args.no_shuffle if mode == 'train' else False,

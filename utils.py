@@ -62,3 +62,15 @@ def get_loss_func(args: Namespace) -> nn.Module:
         return nn.MSELoss(reduction='sum')
 
     raise ValueError(f'Dataset type "{args.task}" not supported.')
+
+def initialize_weights(model: nn.Module) -> None:
+    """
+    Initializes the weights of a model in place.
+
+    :param model: An PyTorch model.
+    """
+    for param in model.parameters():
+        if param.dim() == 1:
+            nn.init.constant_(param, 0)
+        else:
+            nn.init.xavier_normal_(param)

@@ -4,6 +4,7 @@ import torch.nn.functional as F
 
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool, GlobalAttention, Set2Set
 from .layers import GCNConv, GINEConv, DMPNNConv, get_tetra_update
+from utils import initialize_weights
 from torch_geometric.nn import GATConv
 
 
@@ -78,6 +79,8 @@ class GNN(nn.Module):
         # ffn
         self.mult = 2 if self.graph_pool == "set2set" else 1
         self.ffn_out = nn.Linear(self.ffn_hidden_size, self.n_out) #Change here for multiple outputs
+
+        initialize_weights(self)
 
     def forward(self, data):
         x, edge_index, edge_attr, batch, parity_atoms, add_feature = data.x, data.edge_index, data.edge_attr, data.batch, data.parity_atoms, data.add_feature
