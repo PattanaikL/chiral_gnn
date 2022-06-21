@@ -10,6 +10,7 @@ from utils import Standardizer, create_logger, get_loss_func
 from model.gnn import GNN
 from model.training import train, eval, test, build_lr_scheduler
 from model.parsing import parse_train_args
+from model.rbfnn import RBFNN
 
 args = parse_train_args()
 torch.manual_seed(args.pytorch_seed)
@@ -24,7 +25,16 @@ for n_fold in range(0,args.n_fold):
 
     logger.info("Starting training...")
     for model_index in range(0,args.ensemble):
-        model = GNN(args, train_loader.dataset.num_node_features, train_loader.dataset.num_edge_features).to(args.device)
+        if args.pre_train_path: #Pre-Train only for GNN
+            model = GNN(args, train_loader.dataset.num_node_features, train_loader.dataset.num_edge_features).to(
+                args.device)
+            state_dict = torch.load(os.path.join(args.pre_train_path,f"Fold_{n_fold}" ,f"Model_{model_index}",'best_model'), map_location=args.device)
+            model.load_state_dict(state_dict)
+        else:
+            if args.morgan:
+                model = RBFNN(args).to(args.device)
+            else:
+                model = GNN(args, train_loader.dataset.num_node_features, train_loader.dataset.num_edge_features).to(args.device)
         optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
         scheduler = build_lr_scheduler(optimizer, args, len(train_loader.dataset))
         loss = get_loss_func(args)
@@ -42,13 +52,13 @@ for n_fold in range(0,args.n_fold):
         if not os.path.exists(os.path.join(args.log_dir, f"Fold_{n_fold}", f"Model_{model_index}")):
             os.makedirs(os.path.join(args.log_dir, f"Fold_{n_fold}",  f"Model_{model_index}"))
         for epoch in range(0, args.n_epochs):
-            train_loss, train_acc = train(model, train_loader, optimizer, loss, stdzer, args.device, scheduler, args.task, args.scaled_err)
+            train_loss, train_acc = train(model, train_loader, optimizer, loss, stdzer, args.device, scheduler, args.task, args.scaled_err, args.target_weights)
             logger.info(f"Epoch {epoch}: Training Loss {train_loss}")
 
             if args.task == 'classification':
                 logger.info(f"Epoch {epoch}: Training Classification Accuracy {train_acc}")
 
-            val_loss, val_acc = eval(model, val_loader, loss, stdzer, args.device, args.task, args.scaled_err)
+            val_loss, val_acc = eval(model, val_loader, loss, stdzer, args.device, args.task, args.scaled_err,args.target_weights)
             logger.info(f"Epoch {epoch}: Validation Loss {val_loss}")
 
             if args.task == 'classification':
@@ -62,7 +72,11 @@ for n_fold in range(0,args.n_fold):
         logger.info(f"Best Validation Loss {best_val_loss} on Epoch {best_epoch}")
 
     # load best model
-        model = GNN(args, train_loader.dataset.num_node_features, train_loader.dataset.num_edge_features).to(args.device)
+        if args.morgan:
+            model = RBFNN(args).to(args.device)
+        else:
+            model = GNN(args, train_loader.dataset.num_node_features, train_loader.dataset.num_edge_features).to(
+                args.device)
         state_dict = torch.load(os.path.join(args.log_dir,f"Fold_{n_fold}",f"Model_{model_index}", 'best_model'), map_location=args.device)
         model.load_state_dict(state_dict)
 

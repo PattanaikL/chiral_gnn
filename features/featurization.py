@@ -1,8 +1,9 @@
 from argparse import Namespace
 from typing import List, Tuple, Union
 import os
-from rdkit import Chem
 from rdkit.Chem.rdchem import ChiralType
+from rdkit import Chem, DataStructs
+from rdkit.Chem import AllChem
 
 import torch
 import numpy as np
@@ -12,6 +13,7 @@ from itertools import chain
 import torch_geometric as tg
 from torch_geometric.data import Dataset, DataLoader
 from torch.utils.data.sampler import Sampler
+import pickle5 as pickle
 
 # Atom feature sizes
 ATOMIC_SYMBOLS = ['H', 'C', 'N', 'O', 'F', 'Si', 'P', 'S', 'Cl', 'Br', 'I']
@@ -76,7 +78,7 @@ def onek_encoding_unk(value, choices: List) -> List[int]:
     return encoding
 
 
-def atom_features(atom: Chem.rdchem.Atom, args) -> List[Union[bool, int, float]]:
+def atom_features(atom: Chem.rdchem.Atom, args, smiles, index, add_feat) -> List[Union[bool, int, float]]:
     """
     Builds a feature vector for an atom.
 
@@ -98,6 +100,11 @@ def atom_features(atom: Chem.rdchem.Atom, args) -> List[Union[bool, int, float]]
             features += onek_encoding_unk(atom.GetProp('_CIPCode'), ATOM_FEATURES['global_chiral_tag'])
         else:
             features += onek_encoding_unk(None, ATOM_FEATURES['global_chiral_tag'])
+    if args.additional_atom_feat_path:
+        # features.append(add_atom_feat)
+        for i in range(0,add_feat.shape[1]): #Col 0 is list of smiles
+            features.append(add_feat.loc[smiles].iloc[i][index])
+
     return features
 
 def parity_features(atom: Chem.rdchem.Atom) -> int:
@@ -136,6 +143,52 @@ def bond_features(bond: Chem.rdchem.Bond, args) -> List[Union[bool, int, float]]
         #     fbond += onek_encoding_unk(int(bond.GetStereo()), list(range(6))) # remove global cis/trans tags
     return fbond
 
+def morgan_binary_features_generator(mol,
+                                     radius: int,
+                                     num_bits: int) -> np.ndarray:
+    """
+    Generates a binary Morgan fingerprint for a molecule.
+
+    :param mol: A molecule (i.e., either a SMILES or an RDKit molecule).
+    :param radius: Morgan fingerprint radius.
+    :param num_bits: Number of bits in Morgan fingerprint.
+    :return: A 1D numpy array containing the binary Morgan fingerprint.
+    """
+    mol = Chem.MolFromSmiles(mol) if type(mol) == str else mol
+    features_vec = AllChem.GetMorganFingerprintAsBitVect(mol, radius, nBits=num_bits)
+    features = np.zeros((1,))
+    DataStructs.ConvertToNumpyArray(features_vec, features)
+
+    return features
+
+class MorganVec:
+    def __init__(self, smiles: str, args: Namespace):
+        """
+        Computes the graph structure and featurization of a molecule.
+
+        :param smiles: A smiles string.
+        :param args: Arguments.
+        """
+        self.smiles = smiles
+
+        mol = Chem.MolFromSmiles(smiles)
+
+        # add chiral hydrogens
+        H_ids = [a.GetIdx() for a in mol.GetAtoms() if CHIRALTAG_PARITY[a.GetChiralTag()] != 0]
+        if H_ids:
+            mol = Chem.AddHs(mol, onlyOnAtoms=H_ids)
+
+        self.features = morgan_binary_features_generator(mol, args.radius, args.bits)
+
+    def get_components(self):
+        """
+        Returns the components of the BatchMolGraph.
+
+        :return: A tuple containing PyTorch tensors with the atom features, bond features, and graph structure
+        and two lists indicating the scope of the atoms and bonds (i.e. which molecules they belong to).
+        """
+        return self.features
+
 
 class MolGraph:
     """
@@ -169,6 +222,11 @@ class MolGraph:
         self.b2revb = []  # mapping from bond index to the index of the reverse bond
         self.parity_atoms = []  # mapping from atom index to CW (+1), CCW (-1) or undefined tetra (0)
         self.edge_index = []  # list of tuples indicating presence of bonds
+        self.dense = args.dense
+
+        add_feat = []
+        if args.additional_atom_feat_path:
+            add_feat = pd.read_json(args.additional_atom_feat_path)
 
         # Convert smiles to molecule
         mol = Chem.MolFromSmiles(smiles)
@@ -189,7 +247,11 @@ class MolGraph:
         
         # Get atom features
         for i, atom in enumerate(mol.GetAtoms()):
-            self.f_atoms.append(atom_features(atom, args))
+            # add_atom_feat = []
+            # if args.additional_atom_feat_path:
+            #     for index in range(0, add_feat.shape[1]):
+            #         add_atom_feat.append(add_feat.loc[smiles].iloc[index][i])
+            self.f_atoms.append(atom_features(atom, args, smiles, i, add_feat))
             self.parity_atoms.append(parity_features(atom))
         self.f_atoms = [self.f_atoms[i] for i in range(self.n_atoms)]
 
@@ -206,8 +268,9 @@ class MolGraph:
             for a2 in range(a1 + 1, self.n_atoms):
                 bond = mol.GetBondBetweenAtoms(a1, a2)
 
-                if bond is None:
-                    continue
+                if self.dense == False:
+                    if bond is None:
+                        continue
                     
                 self.edge_index.extend([(a1, a2), (a2, a1)])
 
@@ -299,8 +362,13 @@ class MolDataset(Dataset):
 
     def process_key(self, key):
         smi = self.smiles[key]
-        molgraph = MolGraph(smi, self.args)
-        mol = self.molgraph2data(molgraph, key)
+        if self.args.morgan:
+            morganvec = MorganVec(smi,self.args)
+            mol=self.morganvectodata(morganvec, key)
+        else:
+            molgraph = MolGraph(smi, self.args)
+            mol = self.molgraph2data(molgraph, key)
+
         return mol
 
     def molgraph2data(self, molgraph, key):
@@ -310,6 +378,17 @@ class MolDataset(Dataset):
         data.edge_attr = torch.tensor(molgraph.f_bonds, dtype=torch.float)
         data.y = torch.tensor([self.labels[key]], dtype=torch.float)
         data.parity_atoms = torch.tensor(molgraph.parity_atoms, dtype=torch.long)
+        data.smiles = self.smiles[key]
+        if self.add_feature:
+            data.add_feature = torch.tensor([self.add_feature[key]])
+        else:
+            data.add_feature = torch.tensor([], dtype=torch.float)
+        return data
+
+    def morganvectodata(self, morganvec, key):
+        data = tg.data.Data()
+        data.x = torch.tensor(morganvec.features, dtype=torch.float)
+        data.y = torch.tensor([self.labels[key]], dtype=torch.float)
         data.smiles = self.smiles[key]
         if self.add_feature:
             data.add_feature = torch.tensor([self.add_feature[key]])

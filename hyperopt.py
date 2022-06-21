@@ -14,18 +14,22 @@ from utils import Standardizer, create_logger, get_loss_func
 from model.gnn import GNN
 from model.training import train, eval, test, build_lr_scheduler
 from model.parsing import add_train_args, modify_train_args
+from model.rbfnn import RBFNN
 
 
 def optimize(trial, args):
 
-    setattr(args, 'hidden_size', int(trial.suggest_discrete_uniform('hidden_size', 300, 1200, 300)))
-    setattr(args, 'depth', int(trial.suggest_discrete_uniform('depth', 2, 6, 1)))
-    #setattr(args, 'dropout', int(trial.suggest_discrete_uniform('dropout', 0, 1, 0.2)))
-    setattr(args, 'lr', trial.suggest_loguniform('lr', 1e-5, 1e-3))
-    setattr(args, 'batch_size', int(trial.suggest_categorical('batch_size', [25, 50, 100])))
-    #setattr(args, 'graph_pool', trial.suggest_categorical('graph_pool', ['sum', 'mean', 'max', 'attn', 'set2set']))
-    setattr(args, 'ffn_hidden_size', int(trial.suggest_discrete_uniform('ffn_hidden_size', 300, 2000, 300)))
-    setattr(args, 'ffn_depth', int(trial.suggest_discrete_uniform('ffn_depth', 2, 6, 1)))
+    # setattr(args, 'hidden_size', int(trial.suggest_discrete_uniform('hidden_size', 300, 1200, 300)))
+    # setattr(args, 'depth', int(trial.suggest_discrete_uniform('depth', 2, 6, 1)))
+    # setattr(args, 'dropout', int(trial.suggest_discrete_uniform('dropout', 0, 1, 0.2)))
+    # setattr(args, 'lr', trial.suggest_loguniform('lr', 1e-5, 1e-3))
+    # setattr(args, 'batch_size', int(trial.suggest_categorical('batch_size', [25, 50, 100])))
+    # setattr(args, 'graph_pool', trial.suggest_categorical('graph_pool', ['sum', 'mean', 'max', 'attn', 'set2set']))
+    # setattr(args, 'ffn_hidden_size', int(trial.suggest_discrete_uniform('ffn_hidden_size', 300, 2000, 300)))
+    # setattr(args, 'ffn_depth', int(trial.suggest_discrete_uniform('ffn_depth', 2, 6, 1)))
+    setattr(args, 'rbfnn_width', int(trial.suggest_discrete_uniform('rbfnn_width', 1, 31, 3)))
+    setattr(args, 'rbfnn_centers', int(trial.suggest_discrete_uniform('rbfnn_centers', 20, 200, 10)))
+    setattr(args, 'radius', int(trial.suggest_discrete_uniform('radius', 1, 5, 1)))
 
     setattr(args, 'log_dir', os.path.join(args.hyperopt_dir, str(trial._trial_id)))
     modify_train_args(args)
@@ -39,7 +43,11 @@ def optimize(trial, args):
 
         # create model, optimizer, scheduler, and loss fn
         for model_index in range(0, args.ensemble):
-            model = GNN(args, train_loader.dataset.num_node_features, train_loader.dataset.num_edge_features).to(args.device)
+            if args.morgan:
+                model = RBFNN(args).to(args.device)
+            else:
+                model = GNN(args, train_loader.dataset.num_node_features, train_loader.dataset.num_edge_features).to(
+                    args.device)
             optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
             scheduler = build_lr_scheduler(optimizer, args, len(train_loader.dataset))
             loss = get_loss_func(args)
@@ -50,8 +58,8 @@ def optimize(trial, args):
 
         # train
             for epoch in range(0, args.n_epochs):
-                train_loss, train_acc = train(model, train_loader, optimizer, loss, stdzer, args.device, scheduler, args.task,args.scaled_err)
-                val_loss, val_acc = eval(model, val_loader, loss, stdzer, args.device, args.task,args.scaled_err)
+                train_loss, train_acc = train(model, train_loader, optimizer, loss, stdzer, args.device, scheduler, args.task,args.scaled_err,args.target_weights)
+                val_loss, val_acc = eval(model, val_loader, loss, stdzer, args.device, args.task,args.scaled_err,args.target_weights)
                 if val_loss <= best_val_loss:
                     best_val_loss = val_loss
                     best_epoch = epoch
