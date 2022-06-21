@@ -10,21 +10,34 @@ from torch.optim.lr_scheduler import _LRScheduler
 from sklearn.metrics import roc_auc_score
 
 
-def train(model, loader, optimizer, loss, stdzer, device, scheduler, task):
+def train(model, loader, optimizer, loss, stdzer, device, scheduler, task, scaled_err,target_weights):
     model.train()
     loss_all, correct = 0, 0
-
+    if target_weights is not None:
+        factor = sum(target_weights)/len(target_weights)
+        target_weights = [a/factor for a in target_weights]
+        target_weights = torch.Tensor(target_weights).to(device)
     for data in tqdm(loader, total=len(loader)):
         data = data.to(device)
         optimizer.zero_grad()
 
         out = model(data)
-        result = loss(out, stdzer(data.y))
+        mask = torch.isnan(data.y)
+        if target_weights is None:
+            result = loss(out[~mask], stdzer(data.y).to(device)[~mask])
+        else:
+            result = loss((out*target_weights)[~mask], (stdzer(data.y).to(device)*target_weights)[~mask])
         result.backward()
 
         optimizer.step()
         scheduler.step()
-        loss_all += loss(stdzer(out, rev=True), data.y)
+        if scaled_err == False:
+            if target_weights is None:
+                loss_all += loss(stdzer(out, rev=True).to(device)[~mask],data.y[~mask])
+            else:
+                loss_all += loss((stdzer(out, rev=True).to(device)*target_weights)[~mask], (data.y*target_weights)[~mask])
+        else:
+            loss_all += result
 
         if task == 'classification':
             predicted = torch.round(out.data)
@@ -36,15 +49,30 @@ def train(model, loader, optimizer, loss, stdzer, device, scheduler, task):
         return loss_all / len(loader.dataset), correct / len(loader.dataset)
 
 
-def eval(model, loader, loss, stdzer, device, task):
+def eval(model, loader, loss, stdzer, device, task, scaled_err, target_weights):
     model.eval()
     error, correct = 0, 0
-
+    if target_weights is not None:
+        factor = sum(target_weights) / len(target_weights)
+        target_weights = [a / factor for a in target_weights]
+        target_weights = torch.Tensor(target_weights).to(device)
     with torch.no_grad():
         for data in tqdm(loader, total=len(loader)):
             data = data.to(device)
             out = model(data)
-            error += loss(stdzer(out, rev=True), data.y).item()
+            mask = torch.isnan(data.y)
+            if scaled_err == False:
+                if target_weights is None:
+                    error += loss(stdzer(out, rev=True).to(device)[~mask], data.y[~mask]).item()
+                else:
+                    error += loss((stdzer(out, rev=True).to(device) * target_weights)[~mask],
+                                     (data.y * target_weights)[~mask]).item()
+            else:
+                if target_weights is None:
+                    error += loss(out[~mask], stdzer(data.y).to(device)[~mask]).item()
+                else:
+                    error += loss((out * target_weights)[~mask],
+                                  (stdzer(data.y).to(device) * target_weights)[~mask]).item()
 
             if task == 'classification':
                 predicted = torch.round(out.data)
@@ -65,9 +93,11 @@ def test(model, loader, loss, stdzer, device, task):
         for data in tqdm(loader, total=len(loader)):
             data = data.to(device)
             out = model(data)
-            pred = stdzer(out, rev=True)
-            error += loss(pred, data.y).item()
-            preds.extend(pred.cpu().detach().tolist())
+            mask = torch.isnan(data.y)
+            pred_out = stdzer(out, rev=True).to(device)
+            pred = stdzer(out, rev=True).to(device)[~mask]
+            error += loss(pred, data.y[~mask]).item()
+            preds.extend(pred_out.cpu().detach().tolist())
 
             if task == 'classification':
                 predicted = torch.round(out.data)

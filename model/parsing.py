@@ -17,10 +17,8 @@ def add_train_args(parser: ArgumentParser):
                         help='Directory where model checkpoints will be saved')
     parser.add_argument('--task', type=str, default='regression',
                         help='Regression or classification task')
-    parser.add_argument('--seed', type=int, default=0,
-                        help='Random seed to use when splitting data into train/val/test sets.'
-                             'When `num_folds` > 1, the first fold uses this seed and all'
-                             'subsequent folds add 1 to the seed.')
+    parser.add_argument('--pytorch_seed', type=int, default=0,
+                        help='Seed for PyTorch randomness (e.g., random initial weights).')
     # Training arguments
     parser.add_argument('--n_epochs', type=int, default=60,
                         help='Number of epochs to run')
@@ -31,23 +29,25 @@ def add_train_args(parser: ArgumentParser):
                              'init_lr to max_lr. Afterwards, learning rate decreases exponentially'
                              'from max_lr to final_lr.')
     parser.add_argument('--lr', type=float, default=1e-4,
-                        help='Learning rate')
+                        help='Max Learning rate, inital learning rate is 1/10 max and final lr = inital lr')
     parser.add_argument('--num_workers', type=int, default=5,
                         help='Number of workers to use in dataloader')
     parser.add_argument('--no_shuffle', action='store_true', default=False,
                         help='Whether or not to retain default ordering during training')
     parser.add_argument('--shuffle_pairs', action='store_true', default=False,
                         help='Whether or not to shuffle only pairs of stereoisomers')
+    parser.add_argument('--additional_atom_feat_path', type=str,
+                        help='Path to pickle file containing a pandas dataframe')
 
     # Model arguments
     parser.add_argument('--gnn_type', type=str,
-                        choices=['gin', 'gcn', 'dmpnn'],
+                        choices=['gin', 'gcn', 'dmpnn', 'gat', 'gatv2'],
                         help='Type of gnn to use')
     parser.add_argument('--hidden_size', type=int, default=300,
                         help='Dimensionality of hidden layers in MPN')
     parser.add_argument('--depth', type=int, default=3,
                         help='Number of message passing steps')
-    parser.add_argument('--dropout', type=float, default=0.2,
+    parser.add_argument('--dropout', type=float, default=0,
                         help='Dropout probability')
     parser.add_argument('--graph_pool', type=str, default='sum',
                         choices=['sum', 'mean', 'max', 'attn', 'set2set'],
@@ -59,6 +59,34 @@ def add_train_args(parser: ArgumentParser):
                         help='Use local chiral atom features')
     parser.add_argument('--global_chiral_features', action='store_true', default=False,
                         help='Use global chiral atom features')
+    parser.add_argument('--ffn_depth', type=int, default=5, help='FFN layers less the linear output and input layer')
+    parser.add_argument('--ffn_hidden_size', type=int, default=300, help='Dimensionality of hidden layers in FFN')
+    parser.add_argument('--add_feature_path', type=str,
+                        help='Path to csv file containing rdkit features')
+    parser.add_argument('--n_add_feature', type=int,
+                        help='Number of rdkit features per smiles')
+    parser.add_argument('--n_out', type=int, default=1,
+                        help='Number of ouputs in a multi-target problem')
+    parser.add_argument('--scaled_err', default=True)
+    parser.add_argument('--ensemble', type=int, default=1)
+    parser.add_argument('--n_fold', type=int, default=1)
+    parser.add_argument('--gat_head', type=int, default=1)
+    parser.add_argument('--dense', type=bool, default=False)
+    parser.add_argument('--target_weights', nargs="+", type=float , default=None)
+    parser.add_argument('--pre_train_path', type=str, default=None)
+
+    #Argument for RBFNN mode - GNN - RBFNN
+    parser.add_argument('--rbfnn', type=bool, default=False)
+    parser.add_argument('--rbfnn_depth', type=int, default=1)
+    parser.add_argument('--rbfnn_width', type=int, default=9)
+    parser.add_argument('--rbfnn_centers', type=int, default=40)
+    parser.add_argument('--rbfnn_basis_func', type=str, default='gaussian',
+                        choices=['gaussian', 'linear', 'quadratic', 'inverse_quadratic', 'multiquadric',
+                                 'inverse_multiquadric', 'spline', 'poisson_one', 'poisson_two', 'matern32', 'matern52'])
+    #Arguments for Morgan fingerprint
+    parser.add_argument('--morgan', type=bool, default=False)
+    parser.add_argument('--radius', type=int, default=2)
+    parser.add_argument('--bits', type=int, default=1024)
 
 
 def modify_train_args(args: Namespace):
@@ -75,7 +103,6 @@ def modify_train_args(args: Namespace):
     # shuffle=False for custom sampler
     if args.shuffle_pairs:
         setattr(args, 'no_shuffle', True)
-
     setattr(args, 'device', torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
 
 

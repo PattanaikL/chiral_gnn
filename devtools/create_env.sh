@@ -20,8 +20,8 @@ echo "Running ${machine}..."
 
 # request user to select one of the supported CUDA versions
 # source: https://pytorch.org/get-started/locally/
-PS3='Please enter 1, 2, 3, or 4 to specify the desired CUDA version from the options above: '
-options=("9.2" "10.1" "10.2" "cpu" "Quit")
+PS3='Please enter 1, 2, 3, 4, or 5 to specify the desired CUDA version from the options above: '
+options=("9.2" "10.1" "10.2"  "cpu" "Quit")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -31,12 +31,12 @@ do
             break
             ;;
         "10.1")
-			CUDA="cudatoolkit=10.1"
+			      CUDA="cudatoolkit=10.1"
             CUDA_VERSION="cu101"
             break
             ;;
         "10.2")
-			CUDA="cudatoolkit=10.2"
+			      CUDA="cudatoolkit=10.2"
             CUDA_VERSION="cu102"
             break
             ;;

@@ -4,7 +4,10 @@ import torch.nn.functional as F
 
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool, GlobalAttention, Set2Set
 from .layers import GCNConv, GINEConv, DMPNNConv, get_tetra_update
-
+from utils import initialize_weights
+from torch_geometric.nn import GATConv
+from torch_geometric.nn import GATv2Conv
+from .rbfnn import RBFNN
 
 class GNN(nn.Module):
     def __init__(self, args, num_node_features, num_edge_features):
@@ -17,6 +20,17 @@ class GNN(nn.Module):
         self.graph_pool = args.graph_pool
         self.tetra = args.tetra
         self.task = args.task
+        self.ffn_depth = args.ffn_depth
+        self.ffn_hidden_size = args.ffn_hidden_size
+        self.add_feature = args.add_feature_path
+        self.n_add_feature = args.n_add_feature
+        self.n_out = args.n_out
+        self.gat_head = args.gat_head
+        self.rbfnn = args.rbfnn
+        # self.rbfnn_depth = args.rbfnn_depth
+        # self.rbfnn_width = args.rbfnn_width
+        # self.rbfnn_centers = args.rbfnn_centers
+
 
         if self.gnn_type == 'dmpnn':
             self.edge_init = nn.Linear(num_node_features + num_edge_features, self.hidden_size)
@@ -35,8 +49,26 @@ class GNN(nn.Module):
                 self.convs.append(GCNConv(args))
             elif self.gnn_type == 'dmpnn':
                 self.convs.append(DMPNNConv(args))
+            elif self.gnn_type == 'gat':
+                self.convs.append(GATConv(args.hidden_size, args.hidden_size, args.gat_head, edge_dim=self.hidden_size))
+            elif self.gnn_type == 'gatv2':
+                self.convs.append(GATv2Conv(args.hidden_size, args.hidden_size, args.gat_head, edge_dim=self.hidden_size))
             else:
                 ValueError('Undefined GNN type called {}'.format(self.gnn_type))
+        if self.add_feature:
+            self.ffn_1 = nn.Linear(self.hidden_size + self.n_add_feature, self.ffn_hidden_size)
+        else:
+            self.ffn_1 = nn.Linear(self.hidden_size, self.ffn_hidden_size)
+
+        self.ffn = torch.nn.ModuleList()
+        for _ in range(self.ffn_depth):
+            self.ffn.append(nn.Linear(self.ffn_hidden_size, self.ffn_hidden_size))
+        self.ffn_gat = torch.nn.ModuleList()
+        for _ in range(self.depth):
+            self.ffn_gat.append(nn.Linear(self.hidden_size * self.gat_head, self.hidden_size))
+
+        if self.rbfnn == True:
+            self.rbfnn_layer = RBFNN(args)
 
         # graph pooling
         if self.tetra:
@@ -61,10 +93,12 @@ class GNN(nn.Module):
 
         # ffn
         self.mult = 2 if self.graph_pool == "set2set" else 1
-        self.ffn = nn.Linear(self.mult * self.hidden_size, 1)
+        self.ffn_out = nn.Linear(self.ffn_hidden_size, self.n_out) #Change here for multiple outputs
+
+        initialize_weights(self)
 
     def forward(self, data):
-        x, edge_index, edge_attr, batch, parity_atoms = data.x, data.edge_index, data.edge_attr, data.batch, data.parity_atoms
+        x, edge_index, edge_attr, batch, parity_atoms, add_feature = data.x, data.edge_index, data.edge_attr, data.batch, data.parity_atoms, data.add_feature
 
         if self.gnn_type == 'dmpnn':
             row, col = edge_index
@@ -79,8 +113,11 @@ class GNN(nn.Module):
 
         # convolutions
         for l in range(self.depth):
+            if self.gnn_type == 'gat' or self.gnn_type == 'gatv2':
+                x_h = self.convs[l](x_list[-1], edge_index, edge_attr_list[-1])
+            else:
+                x_h, edge_attr_h = self.convs[l](x_list[-1], edge_index, edge_attr_list[-1], parity_atoms)
 
-            x_h, edge_attr_h = self.convs[l](x_list[-1], edge_index, edge_attr_list[-1], parity_atoms)
             h = edge_attr_h if self.gnn_type == 'dmpnn' else x_h
 
             if l == self.depth - 1:
@@ -93,13 +130,29 @@ class GNN(nn.Module):
                 edge_attr_list.append(h)
             else:
                 h += x_h
+                if self.gat_head!= 1:
+                    h = self.ffn_gat[l](h)
                 x_list.append(h)
 
         # dmpnn edge -> node aggregation
         if self.gnn_type == 'dmpnn':
             h, _ = self.edge_to_node(x_list[-1], edge_index, h, parity_atoms)
 
+        h_ffn = self.pool(h, batch)
+
+        if self.add_feature:
+            h_ffn = torch.cat((h_ffn, add_feature), dim=1)
+
+        if self.rbfnn == True:
+            h_ffn = self.rbfnn_layer(h_ffn)
+        else:
+            h_ffn = F.relu(self.ffn_1(h_ffn))
+            for l in range(self.ffn_depth):
+                h_ffn = self.ffn[l](h_ffn)
+                h_ffn = F.relu(h_ffn)
+            h_ffn = self.ffn_out(h_ffn)
+
         if self.task == 'regression':
-            return self.ffn(self.pool(h, batch)).squeeze(-1)
+            return h_ffn #.squeeze(-1)#Need to change squeeze
         elif self.task == 'classification':
             return torch.sigmoid(self.ffn(self.pool(h, batch))).squeeze(-1)

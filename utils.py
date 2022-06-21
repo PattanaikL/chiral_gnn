@@ -1,6 +1,8 @@
 import os
 import logging
 from argparse import Namespace
+
+import torch
 from torch import nn
 
 
@@ -15,8 +17,8 @@ class Standardizer:
 
     def __call__(self, x, rev=False):
         if rev:
-            return (x * self.std) + self.mean
-        return (x - self.mean) / self.std
+            return torch.Tensor((x.detach().cpu().numpy() * self.std) + self.mean)
+        return (x.cpu() - self.mean) / self.std
 
 
 def create_logger(name: str, log_dir: str = None) -> logging.Logger:
@@ -60,3 +62,15 @@ def get_loss_func(args: Namespace) -> nn.Module:
         return nn.MSELoss(reduction='sum')
 
     raise ValueError(f'Dataset type "{args.task}" not supported.')
+
+def initialize_weights(model: nn.Module) -> None:
+    """
+    Initializes the weights of a model in place.
+
+    :param model: An PyTorch model.
+    """
+    for param in model.parameters():
+        if param.dim() == 1:
+            nn.init.constant_(param, 0)
+        else:
+            nn.init.xavier_normal_(param)
